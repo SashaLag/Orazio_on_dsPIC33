@@ -1,11 +1,40 @@
 #include "uart.h"
 #include "buffer_utils.h"
+#include <p33FJ128MC802.h>
 #include <string.h>
 
 void setBaud57600(void) {
+#define BAUD 57600
+#ifdef USE_2X
+  #define FREQ_SCALE 4
+#else
+  #define FREQ_SCALE 16
+#endif
+#ifndef FCY
+  #define FCY 4000000
+#endif
+
+U2BRG = (FCY/(FREQ_SCALE*BAUD))-1;
+#undef BAUD
+#undef FCY
+#undef FREQ_SCALE
 }
 
 void setBaud115200(void) {
+#define BAUD 115200
+#ifdef USE_2X
+  #define FREQ_SCALE 4
+#else
+  #define FREQ_SCALE 16
+#endif
+#ifndef FCY
+  #define FCY 4000000
+#endif
+
+U2BRG = (FCY/(FREQ_SCALE*BAUD))-1;
+#undef BAUD
+#undef FCY
+#undef FREQ_SCALE
 }
 
 #define UART_BUFFER_SIZE 256
