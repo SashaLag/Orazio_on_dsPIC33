@@ -1,4 +1,4 @@
-PREFIX=../../
+PREFIX=..
 ARCH=arch/atmega2560
 CC=avr-gcc
 CC_OPTS=-Wall --std=gnu99 -DF_CPU=16000000UL    -O3 -funsigned-char -funsigned-bitfields  -fshort-enums -Wall -Wstrict-prototypes -mmcu=atmega2560 -I$(PREFIX)/include -I$(PREFIX)/src/arch/include -I$(PREFIX)/src/server

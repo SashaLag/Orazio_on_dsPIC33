@@ -1,4 +1,4 @@
-PREFIX=../..
+PREFIX=..
 ARCH=arch/dspic
 CC=/opt/microchip/xc16/v1.33/bin/xc16-gcc
 CC_OPTS= -mcpu=33FJ128MC802  -omf=elf -legacy-libc  -msmart-io=1 -Wall -msfr-warn=off --std=gnu99 -funsigned-char -funsigned-bitfields  -fshort-enums -I$(PREFIX)/include -I$(PREFIX)/src/arch/include -I$(PREFIX)/src/server -D_DSPIC_

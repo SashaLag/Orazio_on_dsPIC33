@@ -1,5 +1,6 @@
 #include "uart.h"
 #include "buffer_utils.h"
+#include "p33FJ128MC802.h"
 #include <string.h>
 
 void setBaud57600(void) {
@@ -49,18 +50,21 @@ struct UART* UART_init(const char* device __attribute__((unused)), uint32_t baud
   //UCSR0B = _BV(RXEN0) | _BV(TXEN0) | _BV(RXCIE0);   /* Enable RX and TX */
   //sei();
 
-  /* DanCode
+  // DanCode
 
-  U1MODE = 0<<PDSEL1 | 1<<PDSEL0  // mode 01: 8-bit data, even parity
-  U1MODE = 0<<STSEL // 1 stop bit
+  //U1MODE = 1<<UARTEN;
+  //U1MODE = 0<<PDSEL1 | 1<<PDSEL0;
+  //U1MODE = 0<<STSEL;
+  		//U1STA = 1<<UT1EN // transmit enabled: maybe it must be used in ISR
+  //U1MODE = 00<<UEN;
 
-  U1MODE = 1<<UARTEN // enables RX and TX
-  //U1STA = 1<<UT1EN // transmit enabled: maybe it must be used in ISR
+  U1MODEbits.UARTEN = 1; // enables RX and TX
+  U1MODEbits.PDSEL1 = 0;  // mode 01: 8-bit data, even parity
+  U1MODEbits.PDSEL0 = 1;  // ^
+  U1MODEbits.STSEL = 0; // 1 stop bit
 
-  //U1MODE = 00<<UEN // is it required?
+  U1MODEbits.UEN = 0; // U1TX and U1RX enabled -- is it required?
 
-
-  */
   return &uart_0;
 }
 
@@ -110,7 +114,7 @@ uint8_t UART_getChar(struct UART* uart){
 }
 
 // in ISR?
-// no! IFS0 = 1<<U1TXIF // enables tx interrupt
+// IFS0 = 1<<U1TXIF // enables tx interrupt
 // IFS0 = 1<<U1RXIF  // enables rx interrupt
 
 /*
