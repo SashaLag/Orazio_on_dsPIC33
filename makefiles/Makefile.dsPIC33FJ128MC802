@@ -1,0 +1,68 @@
+PREFIX=../..
+ARCH=arch/dspic
+CC=/opt/microchip/xc16/v1.33/bin/xc16-gcc
+CC_OPTS= -mcpu=33FJ128MC802  -omf=elf -legacy-libc  -msmart-io=1 -Wall -msfr-warn=off --std=gnu99 -funsigned-char -funsigned-bitfields  -fshort-enums -I$(PREFIX)/include -I$(PREFIX)/src/arch/include -I$(PREFIX)/src/server -D_DSPIC_
+
+OBJS=uart.o\
+     timer.o\
+     eeprom.o\
+     encoder.o\
+     delay.o\
+     digio.o\
+     pwm.o\
+     packet_handler.o\
+     deferred_packet_handler.o\
+     orazio_globals.o\
+     orazio_param.o\
+     orazio_comm.o\
+     orazio_joints_internal.o\
+     orazio_joints.o\
+     orazio_hbridge_internal.o\
+     orazio_hbridge.o\
+     orazio_drive_internal.o\
+     orazio_drive.o
+
+HEADERS=packet_header.h\
+	packet_operations.h\
+	packet_handler.h\
+	deferred_packet_handler.h\
+	buffer_utils.h\
+
+INCLUDES=$(addprefix $(PREFIX)/include/, $(HEADERS))
+
+BINS= uart_test.elf\
+      timer_test.elf\
+      encoder_test.elf\
+      eeprom_test.elf\
+      digio_test.elf\
+      pwm_test.elf\
+      packet_send_test.elf\
+      packet_echo_test.elf\
+      packet_query_response_test.elf\
+      orazio.elf
+
+.phony:	clean all
+
+all:	$(BINS)
+
+#common objects
+%.o:	$(PREFIX)/src/common/%.c $(INCLUDES)
+	$(CC) $(CC_OPTS) -c  $<
+
+#peripherials
+%.o:	$(PREFIX)/src/$(ARCH)/%.c $(INCLUDES)
+	$(CC) $(CC_OPTS) -c  $<
+
+#peripherial test
+%.o:	$(PREFIX)/src/micro_test/%.c $(INCLUDES)
+	$(CC) $(CC_OPTS) -c  $<
+
+#orazio server objects
+%.o:	$(PREFIX)/src/server/%.c $(INCLUDES)
+	$(CC) $(CC_OPTS) -c  $<
+
+%.elf:	%.o $(OBJS)
+	$(CC) $(CC_OPTS) -o $@ $< $(OBJS) $(LIBS)
+
+clean:
+	rm -rf $(OBJS) $(BINS) *.hex *~ *.o
