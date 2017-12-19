@@ -20,7 +20,7 @@ typedef struct UART {
   volatile uint8_t rx_start;
   volatile uint8_t rx_end;
   volatile uint8_t rx_size;
-  
+
   int baud;
   int uart_num; // hardware uart;
 } UART;
@@ -36,7 +36,7 @@ struct UART* UART_init(const char* device __attribute__((unused)), uint32_t baud
   case 115200: setBaud115200(); break;
   default: return 0;
   }
-  
+
   uart->tx_start=0;
   uart->tx_end=0;
   uart->tx_size=0;
@@ -45,9 +45,22 @@ struct UART* UART_init(const char* device __attribute__((unused)), uint32_t baud
   uart->rx_size=0;
 
   // configure uart
-  //UCSR0C = _BV(UCSZ01) | _BV(UCSZ00); /* 8-bit data */ 
-  //UCSR0B = _BV(RXEN0) | _BV(TXEN0) | _BV(RXCIE0);   /* Enable RX and TX */  
-  //sei();  
+  //UCSR0C = _BV(UCSZ01) | _BV(UCSZ00); /* 8-bit data */
+  //UCSR0B = _BV(RXEN0) | _BV(TXEN0) | _BV(RXCIE0);   /* Enable RX and TX */
+  //sei();
+
+  /* DanCode
+
+  U1MODE = 0<<PDSEL1 | 1<<PDSEL0  // mode 01: 8-bit data, even parity
+  U1MODE = 0<<STSEL // 1 stop bit
+
+  U1MODE = 1<<UARTEN // enables RX and TX
+  //U1STA = 1<<UT1EN // transmit enabled: maybe it must be used in ISR
+
+  //U1MODE = 00<<UEN // is it required?
+
+
+  */
   return &uart_0;
 }
 
@@ -55,7 +68,7 @@ struct UART* UART_init(const char* device __attribute__((unused)), uint32_t baud
 int UART_rxbufferSize(struct UART* uart __attribute__((unused))) {
   return UART_BUFFER_SIZE;
 }
- 
+
 // returns the free occupied space in the buffer
 int  UART_txBufferSize(struct UART* uart __attribute__((unused))) {
   return UART_BUFFER_SIZE;
@@ -95,6 +108,10 @@ uint8_t UART_getChar(struct UART* uart){
     //}
   return c;
 }
+
+// in ISR?
+// no! IFS0 = 1<<U1TXIF // enables tx interrupt
+// IFS0 = 1<<U1RXIF  // enables rx interrupt
 
 /*
 ISR(USART0_RX_vect) {

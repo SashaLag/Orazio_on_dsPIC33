@@ -12,7 +12,7 @@ void Encoder_init(void){
 void Encoder_sample(void){
 }
 
-// returns the number of the encoder 
+// returns the number of the encoder
 uint8_t Encoder_numEncoders(void){
   return NUM_ENCODERS;
 }
@@ -21,4 +21,4 @@ uint8_t Encoder_numEncoders(void){
 uint16_t Encoder_getValue(uint8_t num_encoder){
   return 0;
 }
-
+ 
