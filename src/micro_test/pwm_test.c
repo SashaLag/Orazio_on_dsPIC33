@@ -6,7 +6,7 @@
 #include "uart.h"
 
 
-struct UART* uart;
+struct myUART* uart;
 void printString(char* s){
   int l=strlen(s);
   for(int i=0; i<l; ++i, ++s)

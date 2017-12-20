@@ -31,7 +31,7 @@ void setBaud115200(void) {
 
 #define UART_BUFFER_SIZE 256
 
-typedef struct UART {
+typedef struct myUART {
   int tx_buffer[UART_BUFFER_SIZE];
   volatile uint8_t tx_start;
   volatile uint8_t tx_end;
@@ -44,12 +44,12 @@ typedef struct UART {
   
   int baud;
   int uart_num; // hardware uart;
-} UART;
+} myUART;
 
-static UART uart_0;
+static myUART uart_0;
 
-struct UART* UART_init(const char* device __attribute__((unused)), uint32_t baud) {
-  UART* uart=&uart_0;
+struct myUART* UART_init(const char* device __attribute__((unused)), uint32_t baud) {
+  myUART* uart=&uart_0;
   uart->uart_num=0;
 
   switch(baud){
@@ -72,31 +72,31 @@ struct UART* UART_init(const char* device __attribute__((unused)), uint32_t baud
 }
 
 // returns the free space in the buffer
-int UART_rxbufferSize(struct UART* uart __attribute__((unused))) {
+int UART_rxbufferSize(struct myUART* uart __attribute__((unused))) {
   return UART_BUFFER_SIZE;
 }
  
 // returns the free occupied space in the buffer
-int  UART_txBufferSize(struct UART* uart __attribute__((unused))) {
+int  UART_txBufferSize(struct myUART* uart __attribute__((unused))) {
   return UART_BUFFER_SIZE;
 }
 
 // number of chars in rx buffer
-int UART_rxBufferFull(UART* uart) {
+int UART_rxBufferFull(myUART* uart) {
   return uart->rx_size;
 }
 
 // number of chars in rx buffer
-int UART_txBufferFull(UART* uart) {
+int UART_txBufferFull(myUART* uart) {
   return uart->tx_size;
 }
 
 // number of free chars in tx buffer
-int UART_txBufferFree(UART* uart){
+int UART_txBufferFree(myUART* uart){
   return UART_BUFFER_SIZE-uart->tx_size;
 }
 
-void UART_putChar(struct UART* uart, uint8_t c) {
+void UART_putChar(struct myUART* uart, uint8_t c) {
   // loops until there is some space in the buffer
   while (uart->tx_size>=UART_BUFFER_SIZE);
   ATOMIC_BLOCK(ATOMIC_FORCEON){
@@ -106,7 +106,7 @@ void UART_putChar(struct UART* uart, uint8_t c) {
   UCSR0B |= _BV(UDRIE0); // enable transmit interrupt
 }
 
-uint8_t UART_getChar(struct UART* uart){
+uint8_t UART_getChar(struct myUART* uart){
   while(uart->rx_size==0);
   uint8_t c;
   ATOMIC_BLOCK(ATOMIC_FORCEON){

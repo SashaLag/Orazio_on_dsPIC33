@@ -77,7 +77,7 @@ PacketOperations packet1_ops = {
   0
 };
 
-struct UART* uart;
+struct myUART* uart;
 
 void flushInputBuffers(void) {
   while (UART_rxBufferFull(uart)){

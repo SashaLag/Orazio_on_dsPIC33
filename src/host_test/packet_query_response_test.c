@@ -92,7 +92,7 @@ PacketOperations packet1_ops = {
   0
 };
 
-struct UART* uart;
+struct myUART* uart;
 int main(int argc, char** argv){
   assert(argc>1);
   int fd=serial_open(argv[1]);
