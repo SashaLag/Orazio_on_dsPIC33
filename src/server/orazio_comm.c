@@ -18,7 +18,7 @@ DifferentialDriveControlPacket differential_drive_control_packet_buffer[PBUFNO];
 DifferentialDriveParamPacket differential_drive_param_packet_buffer[PBUFNO];
 
 // stuff used in this module
-static struct UART* uart;
+static struct myUART* uart;
 
 static DeferredPacketHandler packet_handler;
 static uint16_t global_seq;

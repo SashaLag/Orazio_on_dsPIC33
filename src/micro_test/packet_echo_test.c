@@ -76,7 +76,7 @@ PacketOperations packet1_ops = {
   0
 };
 
-struct UART* uart;
+struct myUART* uart;
 
 void flushBuffers(void){
   // we read all what we have to read
