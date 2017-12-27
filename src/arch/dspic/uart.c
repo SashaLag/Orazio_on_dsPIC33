@@ -70,7 +70,16 @@ struct myUART* UART_init(const char* device __attribute__((unused)), uint32_t ba
   uart->rx_start = 0;
   uart->rx_end = 0;
   uart->rx_size = 0;
-
+/*
+  //Short Version
+  //NO IR, Simplex Mode, U1TX and U1RX enabled, IdleState = 1,
+  //16 clocks per bit period, 8-bit data, even parity, 1 stop bit
+  U1MODE = 0x100;   //UART Control Register Configuration
+  //U1TX Idle state is '1', Sync Break TX Disabled, Int on character recieved, 8-bit data
+  //Address Detect Disabled, RX active, Parity Error & Framing Error not detected
+  U1STA = 0x00;     //UART Status & Control Register Configuration
+*/
+  //Long Version
   //UART Control Register Configuration
 	U1MODEbits.USIDL = 0;   // Continue in Idle
   U1MODEbits.IREN = 0;    // No IR translation
@@ -100,12 +109,11 @@ struct myUART* UART_init(const char* device __attribute__((unused)), uint32_t ba
   //Interrupt Configuration
   IPC7 = 0x4400;	// Mid Range Interrupt Priority level, no urgent reason
 	IFS1bits.U2TXIF = 0;   // Clear the Transmit Interrupt Flag
-	IEC1bits.U2TXIE = 1;   // Enable Transmit Interrupts
 	IFS1bits.U2RXIF = 0;   // Clear the Recieve Interrupt Flag
-	IEC1bits.U2RXIE = 1;   // Enable Recieve Interrupts
   //Fire the engine
   U1MODEbits.UARTEN = 1; // enables RX and TX
 	U2STAbits.UTXEN = 1;   // TX Enabled, TX pin controlled by UART
+	IEC1bits.U2RXIE = 1;   // Enable Recieve Interrupts
 
   return &uart_0;
 }
@@ -138,40 +146,37 @@ int UART_txBufferFree(myUART* uart) {
 void UART_putChar(struct myUART* uart, uint8_t c) {
   // loops until there is some space in the buffer
   while (uart->tx_size >= UART_BUFFER_SIZE);
-  //ATOMIC Execution of following Code
   for (INTCON2bits.DISI=1; INTCON2bits.DISI; INTCON2bits.DISI=0) {
     uart->tx_buffer[uart->tx_end] = c;
     BUFFER_PUT(uart->tx, UART_BUFFER_SIZE);
-  }
-  //UCSR0B |= _BV(UDRIE0); // enable transmit interrupt
+  } //Execution of previous code was ATOMIC
+  IEC1bits.U2TXIE = 1;   // Enable Transmit Interrupts
 }
 
 uint8_t UART_getChar(struct myUART* uart) {
   while (uart->rx_size == 0);
   uint8_t c;
-  //ATOMIC Execution of following Code
   for (INTCON2bits.DISI=1; INTCON2bits.DISI; INTCON2bits.DISI=0) {
     c = uart->rx_buffer[uart->rx_start];
     BUFFER_GET(uart->rx, UART_BUFFER_SIZE);
-  }
+  } //Execution of previous code was ATOMIC
   return c;
 }
 
-/*
-ISR(USART0_RX_vect) {
-  uint8_t c=0;    //UDR0;
+
+void __attribute__ ((interrupt, no_auto_psv)) _U1RXInterrupt() {
+  uint8_t c=U1RXREG;
   if (uart_0.rx_size<UART_BUFFER_SIZE) {
     uart_0.rx_buffer[uart_0.rx_end] = c;
     BUFFER_PUT(uart_0.rx, UART_BUFFER_SIZE);
   }
 }
 
-ISR(USART0_UDRE_vect){
+void __attribute__ ((interrupt, no_auto_psv)) _U1TXInterrupt(){
   if (! uart_0.tx_size) {
-    //UCSR0B &= ~_BV(UDRIE0);
+    IEC1bits.U2TXIE = 0;   // Disable Transmit Interrupts
   } else {
-    //UDR0 = uart_0.tx_buffer[uart_0.tx_start];
+    U2TXREG = uart_0.tx_buffer[uart_0.tx_start];
     BUFFER_GET(uart_0.tx, UART_BUFFER_SIZE);
   }
 }
-*/
