@@ -72,41 +72,43 @@ struct myUART* UART_init(const char* device __attribute__((unused)), uint32_t ba
   uart->rx_size = 0;
 
   //UART Control Register Configuration
-	U1MODEbits.USIDL = 0;   // Continue in Idle
+  U1MODEbits.USIDL = 0;   // Continue in Idle
   U1MODEbits.IREN = 0;    // No IR translation
-	U1MODEbits.RTSMD = 1;   // Simplex Mode
+  U1MODEbits.RTSMD = 1;   // Simplex Mode
   U1MODEbits.UEN = 0;     // U1TX and U1RX enabled, CTS,RTS not -- required?
-	U1MODEbits.WAKE = 0;    // No Wake up (since we don't sleep here) -- required?
+  U1MODEbits.WAKE = 0;    // No Wake up (since we don't sleep here) -- required?
   U1MODEbits.LPBACK = 0;	// No Loop Back
-	U1MODEbits.ABAUD = 0;   // No Autobaud (would require sending '55')
-	U1MODEbits.URXINV = 0;	// IdleState = 1  (for dsPIC)
-	U1MODEbits.BRGH = 0;	  // 16 clocks per bit period
+  U1MODEbits.ABAUD = 0;   // No Autobaud (would require sending '55')
+  U1MODEbits.URXINV = 0;	// IdleState = 1  (for dsPIC)
+  U1MODEbits.BRGH = 0;	  // 16 clocks per bit period
   U1MODEbits.PDSEL = 0;   // mode 01: 8-bit data, even parity
   U1MODEbits.STSEL = 0;   // 1 stop bit
-  //UART Status & Control Register Configuration
-  U1STAbits.UTXISEL1 = 0;	// interrupt when char is transferred
+ 
+ //UART Status & Control Register Configuration
+  U1STAbits.UTXISEL1 = 0;	// interrupt when char is transferred to the TSR
   U1STAbits.UTXISEL0 = 0;	// Second part of configuration
-	U1STAbits.UTXINV = 0;   // U1TX Idle state is '1'
-	U1STAbits.UTXBRK = 0;	  // Sync Break TX Disabled
-	U1STAbits.UTXBF = 0;    // TX Buffer not full, one+ more char can be written
-	U1STAbits.TRMT = 0;     // TX Shift Register not full, TX in progress or queued
-	U1STAbits.URXISEL = 0;	// Interrupt on character recieved
-	U1STAbits.ADDEN = 0;    // 8-bit data, Address Detect Disabled
-	U1STAbits.RIDLE = 0;    // RX is active
-	U1STAbits.PERR = 0;     // Parity Error not detected
-	U1STAbits.FERR = 0;     // Framing Error not detected
-	U1STAbits.OERR = 0;     // RX buffer not overflowed
-	U1STAbits.URXDA = 0;    // RX Buffer empty
-  //Interrupt Configuration -- should go in ISR?
+  U1STAbits.UTXINV = 0;   // U1TX Idle state is '1'
+  U1STAbits.UTXBRK = 0;	  // Sync Break TX Disabled
+  U1STAbits.UTXBF = 0;    // TX Buffer not full, one+ more char can be written
+  U1STAbits.TRMT = 0;     // TX Shift Register not full, TX in progress or queued
+  U1STAbits.URXISEL = 0;	// Interrupt on character recieved
+  U1STAbits.ADDEN = 0;    // 8-bit data, Address Detect Disabled
+  U1STAbits.RIDLE = 0;    // RX is active
+  U1STAbits.PERR = 0;     // Parity Error not detected
+  U1STAbits.FERR = 0;     // Framing Error not detected
+  U1STAbits.OERR = 0;     // RX buffer not overflowed
+  U1STAbits.URXDA = 0;    // RX Buffer empty
+ /*
+ //Interrupt Configuration -- should go in ISR?
   IPC7 = 0x4400;	// Mid Range Interrupt Priority level, no urgent reason
-	IFS1bits.U2TXIF = 0;   // Clear the Transmit Interrupt Flag
-	IEC1bits.U2TXIE = 1;   // Enable Transmit Interrupts
-	IFS1bits.U2RXIF = 0;   // Clear the Recieve Interrupt Flag
-	IEC1bits.U2RXIE = 1;   // Enable Recieve Interrupts
+  IFS1bits.U2TXIF = 0;   // Clear the Transmit Interrupt Flag
+  IEC1bits.U2TXIE = 1;   // Enable Transmit Interrupts
+  IFS1bits.U2RXIF = 0;   // Clear the Recieve Interrupt Flag
+  IEC1bits.U2RXIE = 1;   // Enable Recieve Interrupts
   //Fire the engine
   U1MODEbits.UARTEN = 1; // enables RX and TX
-	U2STAbits.UTXEN = 1;   // TX Enabled, TX pin controlled by UART
-
+  U2STAbits.UTXEN = 1;   // TX Enabled, TX pin controlled by UART
+*/
   return &uart_0;
 }
 
@@ -125,7 +127,7 @@ int UART_rxBufferFull(myUART* uart) {
   return uart->rx_size;
 }
 
-// number of chars in rx buffer
+// number of chars in tx buffer
 int UART_txBufferFull(myUART* uart) {
   return uart->tx_size;
 }
