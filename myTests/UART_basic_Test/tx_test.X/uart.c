@@ -115,8 +115,7 @@ struct myUART* UART_init(const char* device __attribute__((unused)), uint32_t ba
   U1STAbits.UTXEN = 1;   // TX Enabled, TX pin controlled by UART
   //IEC0bits.U1TXIE = 1;   // Enable Transmit Interrupt -- in ISR?
   //IEC0bits.U1RXIE = 1;   // Enable Receive Interrupt -- in ISR?
-
-  return &uart_0;
+   return &uart_0;
 }
 
 // returns the free space in the buffer
@@ -148,20 +147,11 @@ void UART_putChar(struct myUART* uart, uint8_t c) {
   // loops until there is some space in the buffer
   while (uart->tx_size >= UART_BUFFER_SIZE);
   //ATOMIC Execution of following Code
-/*
-  for (INTCON2bits.DISI=1; INTCON2bits.DISI; INTCON2bits.DISI=0) {
-    U1TXREG = c;	// just to see if atomic execution works
-    uart->tx_buffer[uart->tx_end] = c;
-    BUFFER_PUT(uart->tx, UART_BUFFER_SIZE);
-  }
-*/
-  //Alternative:
-  INTCON2bits.DISI=1;	// disable all user interrupts
+  asm volatile ("disi #0x3FFF"); // disable all user interrupts (atomically)
     uart->tx_buffer[uart->tx_end] = c;
     BUFFER_PUT(uart->tx, UART_BUFFER_SIZE); 
-    U1TXREG = c;	// just to see if atomic execution works
-  INTCON2bits.DISI=0;	// enable all user interrupts
-
+    U1TXREG = c;	// just to see if atomic execution works 
+  asm volatile ("disi #0"); //enable all user interrupts (atomically)
   IEC0bits.U1TXIE = 1;   // Enable Transmit Interrupt
   }
 
@@ -169,18 +159,10 @@ uint8_t UART_getChar(struct myUART* uart) {
   while (uart->rx_size == 0);
   uint8_t c;
   //ATOMIC Execution of following Code
-  /*
-  for (INTCON2bits.DISI=1; INTCON2bits.DISI; INTCON2bits.DISI=0) {
+  asm volatile ("disi #0x3FFF"); // disable all user interrupts (atomically)
     c = uart->rx_buffer[uart->rx_start];
-    BUFFER_GET(uart->rx, UART_BUFFER_SIZE);
-  }
-  */
-  
-  //Alternative:
-  INTCON2bits.DISI=1;
-  c = uart->rx_buffer[uart->rx_start];
-  BUFFER_GET(uart->rx, UART_BUFFER_SIZE);  
-  INTCON2bits.DISI=0;
+    BUFFER_GET(uart->rx, UART_BUFFER_SIZE);  
+  asm volatile ("disi #0"); //enable all user interrupts (atomically)
   
   return c;
 }

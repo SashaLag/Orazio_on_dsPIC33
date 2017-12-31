@@ -11,7 +11,7 @@ int main ()
    uart=UART_init("uart_0",115200);
    while(1)
    {
-	  printf("Cycle %d\n", count);
+	  //printf("Cycle %d\n", count);
       uint8_t tx = 0x9;
 	  UART_putChar(uart, tx);
 	  count--;

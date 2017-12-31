@@ -1,6 +1,7 @@
 #include "uart.h"
 #include <string.h>
 #include <stdio.h>
+#include "p33FJ128MC802.h"
 
 struct myUART* uart;
 void printString(char* s){
@@ -10,6 +11,7 @@ void printString(char* s){
 }
 
 int main(void){
+  //SRbits.IPL = 7;
   uart=UART_init("uart_0",115200);
   while(1) {
     char tx_message[300];

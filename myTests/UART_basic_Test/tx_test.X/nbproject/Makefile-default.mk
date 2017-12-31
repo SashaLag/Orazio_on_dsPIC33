@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=tx_uart_noINT.c uart.c
+SOURCEFILES_QUOTED_IF_SPACED=uart.c tx_uart.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/tx_uart_noINT.o ${OBJECTDIR}/uart.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/tx_uart_noINT.o.d ${OBJECTDIR}/uart.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/uart.o ${OBJECTDIR}/tx_uart.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/uart.o.d ${OBJECTDIR}/tx_uart.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/tx_uart_noINT.o ${OBJECTDIR}/uart.o
+OBJECTFILES=${OBJECTDIR}/uart.o ${OBJECTDIR}/tx_uart.o
 
 # Source Files
-SOURCEFILES=tx_uart_noINT.c uart.c
+SOURCEFILES=uart.c tx_uart.c
 
 
 CFLAGS=
@@ -94,13 +94,6 @@ MP_LINKER_FILE_OPTION=,--script=p33FJ128MC802.gld
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${OBJECTDIR}/tx_uart_noINT.o: tx_uart_noINT.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/tx_uart_noINT.o.d 
-	@${RM} ${OBJECTDIR}/tx_uart_noINT.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  tx_uart_noINT.c  -o ${OBJECTDIR}/tx_uart_noINT.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/tx_uart_noINT.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1    -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off  
-	@${FIXDEPS} "${OBJECTDIR}/tx_uart_noINT.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
-	
 ${OBJECTDIR}/uart.o: uart.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/uart.o.d 
@@ -108,20 +101,27 @@ ${OBJECTDIR}/uart.o: uart.c  nbproject/Makefile-${CND_CONF}.mk
 	${MP_CC} $(MP_EXTRA_CC_PRE)  uart.c  -o ${OBJECTDIR}/uart.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/uart.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1    -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off  
 	@${FIXDEPS} "${OBJECTDIR}/uart.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
-else
-${OBJECTDIR}/tx_uart_noINT.o: tx_uart_noINT.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/tx_uart.o: tx_uart.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/tx_uart_noINT.o.d 
-	@${RM} ${OBJECTDIR}/tx_uart_noINT.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  tx_uart_noINT.c  -o ${OBJECTDIR}/tx_uart_noINT.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/tx_uart_noINT.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off  
-	@${FIXDEPS} "${OBJECTDIR}/tx_uart_noINT.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	@${RM} ${OBJECTDIR}/tx_uart.o.d 
+	@${RM} ${OBJECTDIR}/tx_uart.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  tx_uart.c  -o ${OBJECTDIR}/tx_uart.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/tx_uart.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1    -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off  
+	@${FIXDEPS} "${OBJECTDIR}/tx_uart.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
+else
 ${OBJECTDIR}/uart.o: uart.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/uart.o.d 
 	@${RM} ${OBJECTDIR}/uart.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  uart.c  -o ${OBJECTDIR}/uart.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/uart.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off  
 	@${FIXDEPS} "${OBJECTDIR}/uart.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/tx_uart.o: tx_uart.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/tx_uart.o.d 
+	@${RM} ${OBJECTDIR}/tx_uart.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  tx_uart.c  -o ${OBJECTDIR}/tx_uart.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/tx_uart.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off  
+	@${FIXDEPS} "${OBJECTDIR}/tx_uart.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 endif
 
