@@ -60,7 +60,7 @@ void _timer0_start(struct Timer* timer){
   uint16_t ocrval=(uint16_t)(15.62*timer->duration_ms);
   TCCR5A = 0;
   TCCR5B = 0;
-  OCR5A = ocrval;
+  OCR5A = ocrval; // output compare register
   TCCR5B |= (1 << WGM52) | (1 << CS50) | (1 << CS52);
   TIMSK5 |= (1 << OCIE5A);
 }
@@ -86,7 +86,7 @@ void Timer_stop(struct Timer* timer){
 
 
 ISR(TIMER5_COMPA_vect) {
-  TCNT5 = 0;
+  TCNT5 = 0; // timer counter register
   if(timers[0].fn)
     (*timers[0].fn)(timers[0].args);
 }

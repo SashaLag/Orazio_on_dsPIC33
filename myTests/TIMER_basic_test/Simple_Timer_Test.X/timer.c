@@ -10,9 +10,9 @@
 #define  NUM_TIMERS 1
 
 // Configuration settings -- should go in main function??
-_FOSC(CSW_FSCM_OFF & FRC_PLL16); // Fosc=16x7.5MHz, Fcy=30MHz
-_FWDT(WDT_OFF);                  // Watchdog timer off
-_FBORPOR(MCLR_DIS);              // Disable reset pin
+//_FOSC(CSW_FSCM_OFF & FRC_PLL16); // Fosc=16x7.5MHz, Fcy=30MHz
+//_FWDT(WDT_OFF);                  // Watchdog timer off
+//_FBORPOR(MCLR_DIS);              // Disable reset pin
 
 
 typedef struct Timer{
@@ -28,16 +28,7 @@ void Timers_init(void){
   memset(timers, 0, sizeof(timers));
   for (int i=0; i<NUM_TIMERS; ++i)
     timers[i].timer_num=i;
-	 // Configure Timer 3.
-    // PR3 and TCKPS are set to call interrupt every 500ms.
-    // Period = PR3 * prescaler * Tcy = 58594 * 256 * 33.33ns = 500ms
-    T3CON = 0;            // Clear Timer 3 configuration
-    T3CONbits.TCKPS = 3;  // Set timer 3 prescaler (0=1:1, 1=1:8, 2=1:64, 3=1:256)
-    PR3 = 58594;          // Set Timer 3 period (max value is 65535)
-    IPC2bits.T3IP = 0x01;            // Set Timer 3 interrupt priority (1)
-    IFS0bits.T3IF = 0; // Clear Timer 3 interrupt flag
-	IEC0bits.T3IE = 1; // Enable Timer 3 interrupt
-//    T3CONbits.TON = 1;    // Turn on Timer 3 -- should go in start function
+
 }
 
 // creates a timer that has a duration of ms milliseconds
@@ -63,20 +54,25 @@ Timer* Timer_create(char* device,
 // stops and destroys a timer
 void Timer_destroy(struct Timer* timer){
   Timer_stop(timer);
-  asm volatile ("disi #0x3FFF"); // ********** disable all user interrupts (atomically)
+  asm volatile ("disi #0x3FFF"); // ********** disable all user interrupts (atomically) (SRbits.IPL = 7 in 1 instruction) 
     int timer_num=timer->timer_num;
     memset(timer, 0, sizeof(Timer));
     timer->timer_num=timer_num;
-  asm volatile ("disi #0x0"); // ************ enable all user interrupts (atomically)
+  asm volatile ("disi #0x0"); // ************ enable all user interrupts (atomically) (SRbits.IPL = 0 in 1 instruction)
 }
 
 void _timer0_start(struct Timer* timer){
-  uint16_t ocrval=(uint16_t)(15.62*timer->duration_ms);
-  //TCCR5A = 0;
-  //TCCR5B = 0;
-  //OCR5A = ocrval;
-  //TCCR5B |= (1 << WGM52) | (1 << CS50) | (1 << CS52);
-  //TIMSK5 |= (1 << OCIE5A);
+  uint16_t ocrval=(uint16_t)(15.62*timer->duration_ms); // in following example ocrval = 58594
+  // Configure Timer 3.
+  // PR3 and TCKPS are set to call interrupt every 500ms.
+  // EXAMPLE: Period = PR3 * prescaler * Tcy = 58594 * 256 * 33.33ns = 500ms
+  T3CON = 0;          		// Clear Timer 3 configuration
+  T3CONbits.TCKPS = 3;     // Set timer 3 prescaler (0=1:1, 1=1:8, 2=1:64, 3=1:256)
+  PR3 = ocrval;               // Set Timer 3 period (max value is 65535)
+  IPC2bits.T3IP = 0x01;     // Set Timer 3 interrupt priority (1)
+  IFS0bits.T3IF = 0; 	    // Clear Timer 3 interrupt flag
+  IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
+  T3CONbits.TON = 1;     // Turn on Timer 3
 }
 
 
@@ -94,7 +90,7 @@ void Timer_stop(struct Timer* timer){
   if (timer->timer_num!=0)
     return;
   asm volatile ("disi #0x3FFF"); // *********** disable all user interrupts (atomically)
-  //TIMSK5 &= ~(1 << OCIE5A);
+  IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
   asm volatile ("disi #0x0"); // ************** enable all user interrupts (atomically)
 }
 

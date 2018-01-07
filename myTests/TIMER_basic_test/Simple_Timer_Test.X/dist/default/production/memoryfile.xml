@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
-  <executable name="dist/default/debug/tx_test.X.debug.elf">
+  <executable name="dist/default/production/Simple_Timer_Test.X.production.elf">
     <memory name="data">
       <units>bytes</units>
       <length>16384</length>
-      <used>1098</used>
-      <free>15286</free>
+      <used>1106</used>
+      <free>15278</free>
     </memory>
     <memory name="program">
       <units>bytes</units>
       <length>131328</length>
-      <used>5562</used>
-      <free>125766</free>
+      <used>6600</used>
+      <free>124728</free>
     </memory>
   </executable>
 </project>
