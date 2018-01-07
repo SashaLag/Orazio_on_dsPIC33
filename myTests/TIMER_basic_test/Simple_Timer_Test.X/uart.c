@@ -3,8 +3,6 @@
 #include "p33FJ128MC802.h"
 #include <string.h>
 
-// maybe has to be solved: W9201-UART: Write attempted to a full FIFO buffer, data lost.
-
 void setBaud57600(void) {
   #define BAUD 57600
   #ifdef USE_2X
@@ -152,6 +150,7 @@ void UART_putChar(struct myUART* uart, uint8_t c) {
   asm volatile ("disi #0x3FFF"); // disable all user interrupts (atomically)
     uart->tx_buffer[uart->tx_end] = c;
     BUFFER_PUT(uart->tx, UART_BUFFER_SIZE); 
+    U1TXREG = c;	// just to see if atomic execution works 
   asm volatile ("disi #0"); //enable all user interrupts (atomically)
   IEC0bits.U1TXIE = 1;   // Enable Transmit Interrupt
   }

@@ -44,9 +44,9 @@ PWMError PWM_init(void){
 
   TCCR4A=TCCRA_MASK;
   TCCR4B=TCCRB_MASK;
-  OCR3AH=0;
-  OCR3BH=0;
-  OCR3CH=0;
+  OCR3AH=0; // maybe 4?
+  OCR3BH=0; // maybe 4?
+  OCR3CH=0; // maybe 4?
 
   sei();
 
