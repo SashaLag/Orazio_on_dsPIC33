@@ -13,8 +13,7 @@ void setBaud57600(void) {
   #ifndef FCY
     #define FCY 4000000
   #endif
-      //U2BRG = (FCY / (FREQ_SCALE * BAUD)) - 1; // 	U1 not U2
-      U1BRG = (FCY / (FREQ_SCALE * BAUD)) - 1;
+      U2BRG = (FCY / (FREQ_SCALE * BAUD)) - 1;
   #undef BAUD
   #undef FCY
   #undef FREQ_SCALE
@@ -30,8 +29,7 @@ void setBaud115200(void) {
   #ifndef FCY
     #define FCY 4000000
   #endif
-      //U2BRG = (FCY / (FREQ_SCALE * BAUD)) - 1; // 	U1 not U2
-      U1BRG = (FCY / (FREQ_SCALE * BAUD)) - 1;
+      U2BRG = (FCY / (FREQ_SCALE * BAUD)) - 1;
   #undef BAUD
   #undef FCY
   #undef FREQ_SCALE
@@ -72,18 +70,8 @@ struct myUART* UART_init(const char* device __attribute__((unused)), uint32_t ba
   uart->rx_start = 0;
   uart->rx_end = 0;
   uart->rx_size = 0;
-/*
-  //Short Version
-  //NO IR, Simplex Mode, U1TX and U1RX enabled, IdleState = 1,
-  //16 clocks per bit period, 8-bit data, even parity, 1 stop bit
-  U1MODE = 0x100;   //UART Control Register Configuration
-  //U1TX Idle state is '1', Sync Break TX Disabled, Int on character received, 8-bit data
-  //Address Detect Disabled, RX active, Parity Error & Framing Error not detected
-  U1STA = 0x00;     //UART Status & Control Register Configuration
-*/
-  //Long Version
+
   //UART Control Register Configuration
-  U1STAbits.UTXEN = 1;   // TX Enabled, TX pin controlled by UART 
   U1MODEbits.USIDL = 0;   // Continue in Idle
   U1MODEbits.IREN = 0;    // No IR translation
   U1MODEbits.RTSMD = 1;   // Simplex Mode
@@ -96,36 +84,30 @@ struct myUART* UART_init(const char* device __attribute__((unused)), uint32_t ba
   U1MODEbits.PDSEL = 0;   // mode 01: 8-bit data, even parity
   U1MODEbits.STSEL = 0;   // 1 stop bit
   //UART Status & Control Register Configuration
-  U1STAbits.UTXISEL1 = 0;	// interrupt when char is transferred
+  U1STAbits.UTXISEL1 = 0;	// Interruot when Char is transferred
   U1STAbits.UTXISEL0 = 0;	// Second part of configuration
   U1STAbits.UTXINV = 0;   // U1TX Idle state is '1'
   U1STAbits.UTXBRK = 0;	  // Sync Break TX Disabled
   U1STAbits.UTXBF = 0;    // TX Buffer not full, one+ more char can be written
   U1STAbits.TRMT = 0;     // TX Shift Register not full, TX in progress or queued
-  U1STAbits.URXISEL = 0;	// Interrupt on character receieved
+  U1STAbits.URXISEL = 0;	// Interrupt on character recieved
   U1STAbits.ADDEN = 0;    // 8-bit data, Address Detect Disabled
   U1STAbits.RIDLE = 0;    // RX is active
   U1STAbits.PERR = 0;     // Parity Error not detected
   U1STAbits.FERR = 0;     // Framing Error not detected
   U1STAbits.OERR = 0;     // RX buffer not overflowed
   U1STAbits.URXDA = 0;    // RX Buffer empty
-
   //Interrupt Configuration
-		//IPC7 = 0x4400;	// Mid Range Interrupt Priority level, no urgent reason -- U1 not U2
-  IPC2bits.U1RXIP = 0x4; // RX Mid Range Interrupt Priority level (0100 => 4), no urgent reason
-  IPC3bits.U1TXIP = 0x4; // TX Mid Range Interrupt Priority level (0100 => 4), no urgent reason
-		//IFS1bits.U2TXIF = 0;   // Clear the Transmit Interrupt Flag -- U1 not U2
-		//IFS1bits.U2RXIF = 0;   // Clear the Receive Interrupt Flag -- U1 not U2
-  IFS0bits.U1TXIF = 0;   // Clear the Transmit Interrupt Flag
-  IFS0bits.U1RXIF = 0;   // Clear the Receive Interrupt Flag
+  IPC2bits.U1RXIP = 0x4;  // RX Mid Range Interrupt Priority level (0100 => 4), no urgent reason
+  IPC3bits.U1TXIP = 0x4;  // TX Mid Range Interrupt Priority level (0100 => 4), no urgent reason
+  U1STAbits.URXISEL1 = 0;	// Interrupt when any char is received and transferred from the U1RSR to the receive buffer.
+  U1STAbits.URXISEL0 = 0;	// Second part of configuration
+  U1STAbits.UTXISEL1 = 0;	// interrupt when char is transferred to the TSR
+  U1STAbits.UTXISEL0 = 0;	// Second part of configuration
+  IFS0bits.U1TXIF = 0;    // Clear the Transmit Interrupt Flag
+  IFS0bits.U1RXIF = 0;    // Clear the Receive Interrupt Flag
   //Fire the engine
-		// U1MODEbits.UARTEN = 1; // enables RX and TX -- moved to start
-		// U2STAbits.UTXEN = 1;   // TX Enabled, TX pin controlled by UART -- U1 not U2
-  U1STAbits.UTXEN = 1;   // TX Enabled, TX pin controlled by UART
-  		// IEC1bits.U2RXIE = 1;   // Enable Receive Interrupts --  U1 not U2
-  IEC0bits.U1TXIE = 1;   // Enable Receive Interrupt
-  IEC0bits.U1RXIE = 1;   // Enable Transmit Interrupt
-
+  U1STAbits.UTXEN = 1;    // TX Enabled, TX pin controlled by UART
 
   return &uart_0;
 }
@@ -158,21 +140,22 @@ int UART_txBufferFree(myUART* uart) {
 void UART_putChar(struct myUART* uart, uint8_t c) {
   // loops until there is some space in the buffer
   while (uart->tx_size >= UART_BUFFER_SIZE);
-  for (INTCON2bits.DISI=1; INTCON2bits.DISI; INTCON2bits.DISI=0) {
+  //ATOMIC Execution of following Code
+  asm volatile ("disi #0x3FFF"); // disable all user interrupts (atomically)
     uart->tx_buffer[uart->tx_end] = c;
     BUFFER_PUT(uart->tx, UART_BUFFER_SIZE);
-  } //Execution of previous code was ATOMIC
-		//IEC1bits.U2TXIE = 1;   // Enable Transmit Interrupts -- U1 not U2
-  IEC0bits.U1TXIE = 1;   // Enable Transmit Interrupts
-}
+  asm volatile ("disi #0"); //enable all user interrupts (atomically)
+  IEC0bits.U1TXIE = 1;   // Enable Transmit Interrupt
+  }
 
 uint8_t UART_getChar(struct myUART* uart) {
   while (uart->rx_size == 0);
   uint8_t c;
-  for (INTCON2bits.DISI=1; INTCON2bits.DISI; INTCON2bits.DISI=0) {
+  //ATOMIC Execution of following Code
+  asm volatile ("disi #0x3FFF"); // disable all user interrupts (atomically)
     c = uart->rx_buffer[uart->rx_start];
     BUFFER_GET(uart->rx, UART_BUFFER_SIZE);
-  } //Execution of previous code was ATOMIC
+  asm volatile ("disi #0"); //enable all user interrupts (atomically)
   return c;
 }
 
@@ -187,8 +170,7 @@ void __attribute__ ((interrupt, no_auto_psv)) _U1RXInterrupt() {
 
 void __attribute__ ((interrupt, no_auto_psv)) _U1TXInterrupt(){
   if (! uart_0.tx_size) {
-			//IEC1bits.U2TXIE = 0;   // Disable Transmit Interrupts -- U1 not U2
-	IEC0bits.U1TXIE = 0;   // Disable Transmit Interrupts
+    IEC1bits.U2TXIE = 0;   // Disable Transmit Interrupts
   } else {
     U2TXREG = uart_0.tx_buffer[uart_0.tx_start];
     BUFFER_GET(uart_0.tx, UART_BUFFER_SIZE);
