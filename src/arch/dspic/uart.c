@@ -5,34 +5,24 @@
 
 void setBaud57600(void) {
   #define BAUD 57600
-  #ifdef USE_2X
-    #define FREQ_SCALE 4
-  #else
-    #define FREQ_SCALE 16
-  #endif
+  #define FREQ_SCALE 16
   #ifndef FCY
-    #define FCY 4000000
+    #define FCY 16006719
   #endif
-      U2BRG = (FCY / (FREQ_SCALE * BAUD)) - 1;
-  #undef BAUD
-  #undef FCY
+      U1BRG = (FCY / (FREQ_SCALE * BAUD)) - 1;
   #undef FREQ_SCALE
+  #undef BAUD
 }
 
 void setBaud115200(void) {
   #define BAUD 115200
-  #ifdef USE_2X
-    #define FREQ_SCALE 4
-  #else
-    #define FREQ_SCALE 16
-  #endif
+  #define FREQ_SCALE 16
   #ifndef FCY
-    #define FCY 4000000
+    #define FCY 16006719
   #endif
-      U2BRG = (FCY / (FREQ_SCALE * BAUD)) - 1;
-  #undef BAUD
-  #undef FCY
+      U1BRG = (FCY / (FREQ_SCALE * BAUD)) - 1;
   #undef FREQ_SCALE
+  #undef BAUD
 }
 
 #define UART_BUFFER_SIZE 256

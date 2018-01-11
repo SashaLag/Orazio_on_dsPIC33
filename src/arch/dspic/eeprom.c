@@ -18,7 +18,7 @@ void EEPROM_init(void){
   // Clock switch to incorporate PLL (NOSC=0b001)
   __builtin_write_OSCCONH(0x01);	 // Initiate Clock Switch to FRC w/ PLL
   __builtin_write_OSCCONL(0x01);   // Start clock switching
-  while (OSCCONbits.COSC!=0x01);	 // Wait for Clock switch to occur
+  while(OSCCONbits.COSC!=0x01); 	 // Wait for Clock switch to occur
   while(OSCCONbits.LOCK!=1);       // Wait for PLL to lock
 
   DataEEInit();
