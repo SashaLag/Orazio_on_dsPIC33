@@ -1,7 +1,7 @@
 #include "uart.h"
 #include <string.h>
 #include <stdio.h>
-#include "p33FJ128MC802.h"
+//#include "p33FJ128MC802.h"
 
 struct myUART* uart;
 void printString(char* s){

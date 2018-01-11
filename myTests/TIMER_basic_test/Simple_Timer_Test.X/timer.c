@@ -10,7 +10,7 @@
 #define  NUM_TIMERS 1
 
 // Configuration settings -- should go in main function??
-//_FOSC(CSW_FSCM_OFF & FRC_PLL16); // Fosc=16x7.5MHz, Fcy=30MHz
+//_FOSC(CSW_FSCM_OFF & FRC_PLL16); // Fosc=16x7.5MHz, Fcy=30MHz, Tcy=33.33ns
 //_FWDT(WDT_OFF);                  // Watchdog timer off
 //_FBORPOR(MCLR_DIS);              // Disable reset pin
 
@@ -62,13 +62,17 @@ void Timer_destroy(struct Timer* timer){
 }
 
 void _timer0_start(struct Timer* timer){
-  uint16_t ocrval=(uint16_t)(15.62*timer->duration_ms); // in following example ocrval = 58594
+  //uint16_t ocrval=(uint16_t)(15.62*timer->duration_ms); // this was ATMEGA
   // Configure Timer 3.
-  // PR3 and TCKPS are set to call interrupt every 500ms.
-  // EXAMPLE: Period = PR3 * prescaler * Tcy = 58594 * 256 * 33.33ns = 500ms
+  // EXAMPLE:    PR3 and TCKPS are set to call interrupt every 500 ms
+  //                   Period = PR3 * prescaler * Tcy = 58594 * 256 * 33.33ns = 500ms
   T3CON = 0;          		// Clear Timer 3 configuration
   T3CONbits.TCKPS = 3;     // Set timer 3 prescaler (0=1:1, 1=1:8, 2=1:64, 3=1:256)
-  PR3 = ocrval;               // Set Timer 3 period (max value is 65535)
+  //uint16_t ocrval=(uint16_t)(timer->duration_ms*FCY/(256)); //formula in the example. TCY has to be defined somewhere
+  //  PR3 = ocrval;   	// Set Timer 3 period (max value is 65535)
+  //PR3 = 10000;
+  uint16_t ocrval = calculateOcrval(timer->duration_ms, T3CONbits.TCKPS);
+  PR3 = ocrval;
   IPC2bits.T3IP = 0x01;     // Set Timer 3 interrupt priority (1)
   IFS0bits.T3IF = 0; 	    // Clear Timer 3 interrupt flag
   IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
@@ -83,6 +87,30 @@ void Timer_start(struct Timer* timer){
     _timer0_start(timer);
   asm volatile ("disi #0x0"); // ********** enable all user interrupts (atomically)
 }
+
+uint32_t calculateOcrval(uint16_t duration_ms, uint8_t prescaler_set){
+	uint8_t prescaler_val;
+	switch (prescaler_set){
+		case 0:
+			prescaler_val = 0;
+			break;
+		case 1:
+			prescaler_val = 8;
+			break;
+		case 2:
+			prescaler_val = 64;
+			break;
+		case 3:
+			prescaler_val = 256;
+			break;
+		default:
+			prescaler_val = 0;
+			break;
+	}
+	uint32_t ocrval = (FCY/prescaler_val/1000)*duration_ms;
+	return ocrval;
+}
+
 
 
 // stops a timer

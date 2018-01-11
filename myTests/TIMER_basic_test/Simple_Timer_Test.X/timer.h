@@ -24,3 +24,6 @@ void Timer_start(struct Timer* timer);
 
 // stops a timer
 void Timer_stop(struct Timer* timer);
+
+// calculates ocrval
+uint32_t calculateOcrval(uint16_t duration_ms, uint8_t prescaler_set);
