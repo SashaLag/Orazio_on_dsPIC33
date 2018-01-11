@@ -200,7 +200,6 @@ void __attribute__ ((interrupt, no_auto_psv)) _U1TXInterrupt(){
   } else {
     U1TXREG = uart_0.tx_buffer[uart_0.tx_start];
     BUFFER_GET(uart_0.tx, UART_BUFFER_SIZE);
-
   }
 }
 
