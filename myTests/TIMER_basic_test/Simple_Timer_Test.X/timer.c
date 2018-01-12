@@ -9,11 +9,6 @@
 // we hook to timer 3
 #define  NUM_TIMERS 1
 
-// Configuration settings -- should go in main function??
-//_FOSC(CSW_FSCM_OFF & FRC_PLL16); // Fosc=16x7.5MHz, Fcy=30MHz, Tcy=33.33ns
-//_FWDT(WDT_OFF);                  // Watchdog timer off
-//_FBORPOR(MCLR_DIS);              // Disable reset pin
-
 
 typedef struct Timer{
   int timer_num;
@@ -70,9 +65,9 @@ void _timer0_start(struct Timer* timer){
   T3CONbits.TCKPS = 3;     // Set timer 3 prescaler (0=1:1, 1=1:8, 2=1:64, 3=1:256)
   //uint16_t ocrval=(uint16_t)(timer->duration_ms*FCY/(256)); //formula in the example. TCY has to be defined somewhere
   //  PR3 = ocrval;   	// Set Timer 3 period (max value is 65535)
-  //PR3 = 10000;
   uint16_t ocrval = calculateOcrval(timer->duration_ms, T3CONbits.TCKPS);
   PR3 = ocrval;
+  //PR3 = 1562;
   IPC2bits.T3IP = 0x01;     // Set Timer 3 interrupt priority (1)
   IFS0bits.T3IF = 0; 	    // Clear Timer 3 interrupt flag
   IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
@@ -88,11 +83,11 @@ void Timer_start(struct Timer* timer){
   asm volatile ("disi #0x0"); // ********** enable all user interrupts (atomically)
 }
 
-uint32_t calculateOcrval(uint16_t duration_ms, uint8_t prescaler_set){
-	uint8_t prescaler_val;
+uint16_t calculateOcrval(uint16_t duration_ms, uint8_t prescaler_set){
+	uint16_t prescaler_val;
 	switch (prescaler_set){
 		case 0:
-			prescaler_val = 0;
+			prescaler_val = 1;
 			break;
 		case 1:
 			prescaler_val = 8;
@@ -104,10 +99,10 @@ uint32_t calculateOcrval(uint16_t duration_ms, uint8_t prescaler_set){
 			prescaler_val = 256;
 			break;
 		default:
-			prescaler_val = 0;
+			prescaler_val = 1;
 			break;
 	}
-	uint32_t ocrval = (FCY/prescaler_val/1000)*duration_ms;
+	uint16_t ocrval = (16000000/prescaler_val/1000)*duration_ms; // FCY = 16000000;  /1000 because i use [ms] and not [s]
 	return ocrval;
 }
 

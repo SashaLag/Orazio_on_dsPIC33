@@ -42,7 +42,7 @@ int main(void){
   uart=UART_init("uart_0",115200);
   Timers_init();
   volatile uint16_t do_stuff;
-  struct Timer* timer=Timer_create("timer_0", 5, timerFn, (void*) &do_stuff); 
+  struct Timer* timer=Timer_create("timer_0", 100, timerFn, (void*) &do_stuff); 
   Timer_start(timer);
   uint16_t tick=0;
   while(1) {

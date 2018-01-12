@@ -62,6 +62,7 @@ struct myUART* UART_init(const char* device __attribute__((unused)), uint32_t ba
   uart->rx_size = 0;
 
   //UART Control Register Configuration
+  U1MODEbits.UARTEN = 1;  // enables RX and TX
   U1MODEbits.USIDL = 0;   // Continue in Idle
   U1MODEbits.IREN = 0;    // No IR translation
   U1MODEbits.RTSMD = 1;   // Simplex Mode
@@ -74,8 +75,6 @@ struct myUART* UART_init(const char* device __attribute__((unused)), uint32_t ba
   U1MODEbits.PDSEL = 0;   // mode 01: 8-bit data, even parity
   U1MODEbits.STSEL = 0;   // 1 stop bit
   //UART Status & Control Register Configuration
-  U1STAbits.UTXISEL1 = 0;	// Interruot when Char is transferred
-  U1STAbits.UTXISEL0 = 0;	// Second part of configuration
   U1STAbits.UTXINV = 0;   // U1TX Idle state is '1'
   U1STAbits.UTXBRK = 0;	  // Sync Break TX Disabled
   U1STAbits.UTXBF = 0;    // TX Buffer not full, one+ more char can be written
@@ -86,7 +85,7 @@ struct myUART* UART_init(const char* device __attribute__((unused)), uint32_t ba
   U1STAbits.PERR = 0;     // Parity Error not detected
   U1STAbits.FERR = 0;     // Framing Error not detected
   U1STAbits.OERR = 0;     // RX buffer not overflowed
-  U1STAbits.URXDA = 0;    // RX Buffer empty
+  U1STAbits.URXDA = 0;    // RX Buffer empty -- READ ONLY
   //Interrupt Configuration
   IPC2bits.U1RXIP = 0x4;  // RX Mid Range Interrupt Priority level (0100 => 4), no urgent reason
   IPC3bits.U1TXIP = 0x4;  // TX Mid Range Interrupt Priority level (0100 => 4), no urgent reason
@@ -160,9 +159,9 @@ void __attribute__ ((interrupt, no_auto_psv)) _U1RXInterrupt() {
 
 void __attribute__ ((interrupt, no_auto_psv)) _U1TXInterrupt(){
   if (! uart_0.tx_size) {
-    IEC1bits.U2TXIE = 0;   // Disable Transmit Interrupts
+    IEC0bits.U1TXIE = 0;   // Disable Transmit Interrupts
   } else {
-    U2TXREG = uart_0.tx_buffer[uart_0.tx_start];
+    U1TXREG = uart_0.tx_buffer[uart_0.tx_start];
     BUFFER_GET(uart_0.tx, UART_BUFFER_SIZE);
   }
 }
