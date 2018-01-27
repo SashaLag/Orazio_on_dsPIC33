@@ -5,10 +5,9 @@
 #include <string.h>
 #include "p33FJ128MC802.h"
 
-#define FNOSC_FRC     0x0080  // Internal Fast RC (FRC) (16 MHz > 8 MHz, PLL not allowed)
-#define FCKSM_CSECMD  0x0067  // Clock Switching enabled and Fail Safe Clock Monitor disabled
-#define OSCIOFNC_OFF  0x00E7  // OSC2 Pin Function: OSC2 is Clock Output
-#define POSCMD_NONE   0x00E7  // Primary Oscillator Mode: Disabled
+#pragma config FNOSC = FRC      // select internal FRC at POR
+#pragma config FCKSM = CSECMD    // enable clock switching
+#pragma config POSCMD = XT    // configure POSC for XT mode
 
 struct myUART* uart;
 void printString(char* s){
@@ -23,22 +22,24 @@ void timerFn(void* args){
 }
 
 int main(void){
-	
-	  // Configure Oscillator to operate the device at 16 Mhz, Fcy=Fosc/2
-  // Fosc= Fin*M/(N1*N2) = 7.37M*139/(8*8)=32.013Mhz for 7.37M input clock
-  PLLFBD=137;             // M=139
-  CLKDIVbits.PLLPOST=3;		// N1=8
-  CLKDIVbits.PLLPRE=6;		// N2=8
+  // Configure Oscillator to operate the device at 16 Mhz, Fcy=Fosc/2
+  // Fosc= Fin*M/(N1*N2) = 10M*64/(4*5)=32Mhz for 10M input clock
+  PLLFBD=62;             // M=64
+  CLKDIVbits.PLLPOST=1;		// N1=4
+  CLKDIVbits.PLLPRE=3;		// N2=5
   OSCTUN=0;					      // Tune FRC oscillator, if FRC is used
 
-  // Clock switch to incorporate PLL (NOSC=0b001)
-  __builtin_write_OSCCONH(0x01);	 // Initiate Clock Switch to FRC w/ PLL
-  __builtin_write_OSCCONL(0x01);   // Start clock switching
-//  while (OSCCONbits.COSC!=0x01);	 // Wait for Clock switch to occur
-//  while(OSCCONbits.LOCK!=1);       // Wait for PLL to lock
+__builtin_write_OSCCONH(0x03);//__builtin_write_OSCCONH(0x01); //for FRC
+__builtin_write_OSCCONL(OSCCON | 0x01);
+// Wait for Clock switch to occur
+while (OSCCONbits.COSC != 0b011); //while (OSCCONbits.COSC != 0b001); // for FRC
+// Wait for PLL to lock
+while(OSCCONbits.LOCK!=1) {};
+	
+TRISB=0;
+LATB = 0x0;
 
-	
-	
+
   uart=UART_init("uart_0",115200);
   Timers_init();
   volatile uint16_t do_stuff;

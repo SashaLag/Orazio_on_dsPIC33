@@ -1,13 +1,15 @@
+#define FCY 16000000UL
 #include "uart.h"
 #include "buffer_utils.h"
 #include "p33FJ128MC802.h"
 #include <string.h>
+#include <libpic30.h>
 
 void setBaud57600(void) {
   #define BAUD 57600
-  #define FREQ_SCALE 16
+  #define FREQ_SCALE 4//16
   #ifndef FCY
-    #define FCY 16006719
+    #define FCY 16000000
   #endif
       U1BRG = (FCY / (FREQ_SCALE * BAUD)) - 1;
   #undef FREQ_SCALE
@@ -16,11 +18,11 @@ void setBaud57600(void) {
 
 void setBaud115200(void) {
   #define BAUD 115200
-  #define FREQ_SCALE 16
+  #define FREQ_SCALE 4//16
   #ifndef FCY
-    #define FCY 16006719
+    #define FCY 16000000
   #endif
-      U1BRG = 4;//(FCY / (FREQ_SCALE * BAUD)) - 1;
+      U1BRG = (FCY / (FREQ_SCALE * BAUD)) - 1;
   #undef FREQ_SCALE
   #undef BAUD
 }
@@ -71,7 +73,7 @@ struct myUART* UART_init(const char* device __attribute__((unused)), uint32_t ba
   U1MODEbits.LPBACK = 0;	// No Loop Back
   U1MODEbits.ABAUD = 0;   // No Autobaud (would require sending '55')
   U1MODEbits.URXINV = 0;	// IdleState = 1  (for dsPIC)
-  U1MODEbits.BRGH = 0;	  // 16 clocks per bit period
+  U1MODEbits.BRGH = 1;//0;	  // 16 clocks per bit period
   U1MODEbits.PDSEL = 0;   // mode 01: 8-bit data, even parity
   U1MODEbits.STSEL = 0;   // 1 stop bit
   //UART Status & Control Register Configuration
@@ -135,6 +137,7 @@ void UART_putChar(struct myUART* uart, uint8_t c) {
     BUFFER_PUT(uart->tx, UART_BUFFER_SIZE);
   asm volatile ("disi #0"); //enable all user interrupts (atomically)
   IEC0bits.U1TXIE = 1;   // Enable Transmit Interrupt
+  __delay_ms(200);
   }
 
 uint8_t UART_getChar(struct myUART* uart) {

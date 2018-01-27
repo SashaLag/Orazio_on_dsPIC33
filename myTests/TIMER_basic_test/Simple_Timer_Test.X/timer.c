@@ -122,4 +122,5 @@ void __attribute__ ((interrupt, no_auto_psv)) _T3Interrupt() {
   IFS0bits.T3IF = 0; //clear Timer3 interrupt flag -- in atmega: TCNT5 = 0;
   if(timers[0].fn)
     (*timers[0].fn)(timers[0].args);
+  LATB = ~LATB;
 }

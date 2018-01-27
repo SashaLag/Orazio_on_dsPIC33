@@ -1,22 +1,15 @@
-#define FCY 16006719UL
+#define FCY 16000000UL
 
 #include "uart.h"
 #include <string.h>
 #include <stdio.h>
 #include "delay.h"
 #include "p33FJ128MC802.h"
-//#include <libpic30.h>
+#include <libpic30.h>
 
-
-_FOSCSEL(FNOSC_FRC & IESO_OFF); // Internal FRC start-up without PLL,
-// no Two Speed Start-up
-_FOSC(FCKSM_CSECMD & OSCIOFNC_OFF & POSCMD_XT); // Clock switch enabled,
-// Primarly Oscillator XT
-_FWDT(FWDTEN_OFF); // Watchdog Timer disabled
-//_FPOR(PPWRT_PWR128); // Power-up Timer enabled 128 ms
-_FICD(JTAGEN_OFF); // Disable JTAG
-
-
+#pragma config FNOSC = FRC      // select internal FRC at POR
+#pragma config FCKSM = CSECMD    // enable clock switching
+#pragma config POSCMD = XT    // configure POSC for XT mode
 
 struct myUART* uart;
 void printString(char* s){
@@ -29,16 +22,16 @@ int main(void){
 
 
   // Configure Oscillator to operate the device at 16 Mhz, Fcy=Fosc/2
-  // Fosc= Fin*M/(N1*N2) = 7.37M*139/(8*8)=32.013Mhz for 7.37M input clock
-  PLLFBD=137;             // M=139
-  CLKDIVbits.PLLPOST=3;		// N1=8
-  CLKDIVbits.PLLPRE=6;		// N2=8
+  // Fosc= Fin*M/(N1*N2) = 10M*64/(4*5)=32Mhz for 10M input clock
+  PLLFBD=62;             // M=64
+  CLKDIVbits.PLLPOST=1;		// N1=4
+  CLKDIVbits.PLLPRE=3;		//N2=5
   OSCTUN=0;					      // Tune FRC oscillator, if FRC is used
 
-__builtin_write_OSCCONH(0x01);
+__builtin_write_OSCCONH(0x03);//__builtin_write_OSCCONH(0x01); //for FRC
 __builtin_write_OSCCONL(OSCCON | 0x01);
 // Wait for Clock switch to occur
-while (OSCCONbits.COSC != 0b001);
+while (OSCCONbits.COSC != 0b011); //while (OSCCONbits.COSC != 0b001); // for FRC
 // Wait for PLL to lock
 while(OSCCONbits.LOCK!=1) {};
 
@@ -56,8 +49,8 @@ while(OSCCONbits.LOCK!=1) {};
     rx_message[2]=0;
     int size=2; //0;
     
-    while(1){
-      delayMs(100); // 625 =~ 1 sec for some reason 
+//      delayMs(100); // 625 =~ 1 sec for some reason 
+        __delay_ms(100);
         //uint16_t sec = 1;
         //__delay_ms((uint16_t)1000*sec/(FCY/1000000));
 //      sprintf(tx_message, "\nbuffer rx: %d message: ",
@@ -76,8 +69,5 @@ while(OSCCONbits.LOCK!=1) {};
       //++size;
       //rx_message[size]=0;
       //if (c=='\n' || c=='\r' || c==0)
-
-	break;
-    }
   }
 }

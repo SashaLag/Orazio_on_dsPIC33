@@ -5,6 +5,8 @@
 
 // maybe has to be solved: W9201-UART: Write attempted to a full FIFO buffer, data lost.
 
+#define USE_2X
+
 void setBaud57600(void) {
   #define BAUD 57600
   #ifdef USE_2X
@@ -13,9 +15,9 @@ void setBaud57600(void) {
     #define FREQ_SCALE 16
   #endif
   #ifndef FCY
-    #define FCY 4000000
+    #define FCY 16000000
   #endif
-      U2BRG = (FCY / (FREQ_SCALE * BAUD)) - 1;
+      U1BRG = (FCY / (FREQ_SCALE * BAUD)) - 1;
   #undef BAUD
   #undef FCY
   #undef FREQ_SCALE
@@ -29,9 +31,9 @@ void setBaud115200(void) {
     #define FREQ_SCALE 16
   #endif
   #ifndef FCY
-    #define FCY 4000000
+    #define FCY 16000000
   #endif
-      U2BRG = (FCY / (FREQ_SCALE * BAUD)) - 1;
+      U1BRG = (FCY / (FREQ_SCALE * BAUD)) - 1;
   #undef BAUD
   #undef FCY
   #undef FREQ_SCALE
@@ -83,7 +85,7 @@ struct myUART* UART_init(const char* device __attribute__((unused)), uint32_t ba
   U1MODEbits.LPBACK = 0;	// No Loop Back
   U1MODEbits.ABAUD = 0;   // No Autobaud (would require sending '55')
   U1MODEbits.URXINV = 0;	// IdleState = 1  (for dsPIC)
-  U1MODEbits.BRGH = 0;	  // 16 clocks per bit period
+  U1MODEbits.BRGH = 1;//0;	  // 16 clocks per bit period
   U1MODEbits.PDSEL = 0;   // mode 01: 8-bit data, even parity
   U1MODEbits.STSEL = 0;   // 1 stop bit
  

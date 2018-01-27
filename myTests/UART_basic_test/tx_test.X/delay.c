@@ -1,4 +1,4 @@
-#define FCY 16006719UL
+#define FCY 16000000UL
 //#define FCY 10000000UL
 #include "delay.h"
 #include <libpic30.h>
