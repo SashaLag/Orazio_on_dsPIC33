@@ -59,10 +59,10 @@ while(OSCCONbits.LOCK!=1) {};
 //        sprintf(tx_message, "\nbuff: %d",
 //	      UART_rxBufferFull(uart));
 
-      sprintf(tx_message, "bufferIsComing\n");  
+      sprintf(tx_message, "ABCD");  
         
       printString(tx_message);
-      printString(rx_message);
+      //printString(rx_message);
       //uint8_t c= UART_getChar(uart);
       //uint8_t c = 0x61;
       //rx_message[size]=c;

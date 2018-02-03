@@ -98,8 +98,16 @@ struct myUART* UART_init(const char* device __attribute__((unused)), uint32_t ba
   IFS0bits.U1TXIF = 0;    // Clear the Transmit Interrupt Flag
   IFS0bits.U1RXIF = 0;    // Clear the Receive Interrupt Flag
   //Fire the engine
+  //while (!U1MODEbits.UARTEN);
   U1STAbits.UTXEN = 1;    // TX Enabled, TX pin controlled by UART
-
+  
+  //UART PINS
+  //RPINR18bits.U1RXR = 3; //INPUT  RPINR18 means U1RX -> MAPPED TO PR3
+  RPINR18bits.U1RXR = 3; //INPUT  RPINR18 means U1RX -> MAPPED TO PR3
+  //RPOR1bits.RP2R = 3; //OUTPUT    RP2R means U1TX -> MAPPED TO PR2
+  RPOR1bits.RP2R = 3; //OUTPUT    RP2R means U1TX -> MAPPED TO PR2
+  AD1PCFGL = 0xFFFF; //FONDAMENTALE PER LA UART, DEVO CONFIGURARE QUEI PIN COME DIGITALI, DI BASE SONO ANALOGICI
+  
   return &uart_0;
 }
 
@@ -137,7 +145,7 @@ void UART_putChar(struct myUART* uart, uint8_t c) {
     BUFFER_PUT(uart->tx, UART_BUFFER_SIZE);
   asm volatile ("disi #0"); //enable all user interrupts (atomically)
   IEC0bits.U1TXIE = 1;   // Enable Transmit Interrupt
-  __delay_ms(200);
+  __delay_ms(10);
   }
 
 uint8_t UART_getChar(struct myUART* uart) {
@@ -161,7 +169,9 @@ void __attribute__ ((interrupt, no_auto_psv)) _U1RXInterrupt() {
 }
 
 void __attribute__ ((interrupt, no_auto_psv)) _U1TXInterrupt(){
-  if (! uart_0.tx_size) {
+  IFS0bits.U1TXIF = 0;    // Clear the Transmit Interrupt Flag
+    if (! uart_0.tx_size) {
+    U1TXREG=0x49;  // this is for debug
     IEC0bits.U1TXIE = 0;   // Disable Transmit Interrupts
   } else {
     U1TXREG = uart_0.tx_buffer[uart_0.tx_start];
