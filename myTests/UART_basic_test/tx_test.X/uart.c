@@ -1,13 +1,13 @@
-#define FCY 16000000UL
 #include "uart.h"
 #include "buffer_utils.h"
-#include "p33FJ128MC802.h"
+#include "delay.h"
+#include <p33FJ128MC802.h>
 #include <string.h>
 #include <libpic30.h>
 
 void setBaud57600(void) {
   #define BAUD 57600
-  #define FREQ_SCALE 4//16
+  #define FREQ_SCALE 4
   #ifndef FCY
     #define FCY 16000000
   #endif
@@ -18,7 +18,7 @@ void setBaud57600(void) {
 
 void setBaud115200(void) {
   #define BAUD 115200
-  #define FREQ_SCALE 4//16
+  #define FREQ_SCALE 4
   #ifndef FCY
     #define FCY 16000000
   #endif
@@ -73,21 +73,21 @@ struct myUART* UART_init(const char* device __attribute__((unused)), uint32_t ba
   U1MODEbits.LPBACK = 0;	// No Loop Back
   U1MODEbits.ABAUD = 0;   // No Autobaud (would require sending '55')
   U1MODEbits.URXINV = 0;	// IdleState = 1  (for dsPIC)
-  U1MODEbits.BRGH = 1;//0;	  // 16 clocks per bit period
+  U1MODEbits.BRGH = 1;	  // 4 clocks per bit period
   U1MODEbits.PDSEL = 0;   // mode 01: 8-bit data, even parity
   U1MODEbits.STSEL = 0;   // 1 stop bit
+  
   //UART Status & Control Register Configuration
   U1STAbits.UTXINV = 0;   // U1TX Idle state is '1'
   U1STAbits.UTXBRK = 0;	  // Sync Break TX Disabled
   U1STAbits.UTXBF = 0;    // TX Buffer not full, one+ more char can be written
   U1STAbits.TRMT = 0;     // TX Shift Register not full, TX in progress or queued
-  U1STAbits.URXISEL = 0;	// Interrupt on character recieved
   U1STAbits.ADDEN = 0;    // 8-bit data, Address Detect Disabled
   U1STAbits.RIDLE = 0;    // RX is active
   U1STAbits.PERR = 0;     // Parity Error not detected
   U1STAbits.FERR = 0;     // Framing Error not detected
   U1STAbits.OERR = 0;     // RX buffer not overflowed
-  U1STAbits.URXDA = 0;    // RX Buffer empty -- READ ONLY
+  
   //Interrupt Configuration
   IPC2bits.U1RXIP = 0x4;  // RX Mid Range Interrupt Priority level (0100 => 4), no urgent reason
   IPC3bits.U1TXIP = 0x4;  // TX Mid Range Interrupt Priority level (0100 => 4), no urgent reason
@@ -98,16 +98,29 @@ struct myUART* UART_init(const char* device __attribute__((unused)), uint32_t ba
   IFS0bits.U1TXIF = 0;    // Clear the Transmit Interrupt Flag
   IFS0bits.U1RXIF = 0;    // Clear the Receive Interrupt Flag
   //Fire the engine
-  //while (!U1MODEbits.UARTEN);
   U1STAbits.UTXEN = 1;    // TX Enabled, TX pin controlled by UART
   
-  //UART PINS
-  //RPINR18bits.U1RXR = 3; //INPUT  RPINR18 means U1RX -> MAPPED TO PR3
-  RPINR18bits.U1RXR = 3; //INPUT  RPINR18 means U1RX -> MAPPED TO PR3
-  //RPOR1bits.RP2R = 3; //OUTPUT    RP2R means U1TX -> MAPPED TO PR2
-  RPOR1bits.RP2R = 3; //OUTPUT    RP2R means U1TX -> MAPPED TO PR2
-  AD1PCFGL = 0xFFFF; //FONDAMENTALE PER LA UART, DEVO CONFIGURARE QUEI PIN COME DIGITALI, DI BASE SONO ANALOGICI
   
+  asm volatile ( "mov #OSCCONL, w1 \n"
+                "mov #0x45, w2 \n"
+                "mov #0x57, w3 \n"
+                "mov.b w2, [w1] \n"
+                "mov.b w3, [w1] \n"
+                "bclr OSCCON, #6 "); // CONTROL REGISTER UNLOCK: enable writes
+   
+  //UART PINS
+  RPINR18bits.U1RXR = 7; //INPUT  RPINR18 means U1RX -> MAPPED TO RP7 -> UART1 (RX)
+  RPOR4bits.RP8R = 3; //OUTPUT RP2R means U1TX -> MAPPED TO RP8 -> UART1 (TX)
+  
+  asm volatile ( "mov #OSCCONL, w1 \n"
+                "mov #0x45, w2 \n"
+                "mov #0x57, w3 \n"
+                "mov.b w2, [w1] \n"
+                "mov.b w3, [w1] \n"
+                "bset OSCCON, #6"); // CONTROL REGISTER LOCK: disable writes
+  
+  AD1PCFGL = 0xFFFF; //FONDAMENTALE PER LA UART, DEVO CONFIGURARE QUEI PIN COME DIGITALI, DI BASE SONO ANALOGICI
+   
   return &uart_0;
 }
 
@@ -145,7 +158,7 @@ void UART_putChar(struct myUART* uart, uint8_t c) {
     BUFFER_PUT(uart->tx, UART_BUFFER_SIZE);
   asm volatile ("disi #0"); //enable all user interrupts (atomically)
   IEC0bits.U1TXIE = 1;   // Enable Transmit Interrupt
-  __delay_ms(10);
+  delayMs(10); // more than enough
   }
 
 uint8_t UART_getChar(struct myUART* uart) {
@@ -169,9 +182,8 @@ void __attribute__ ((interrupt, no_auto_psv)) _U1RXInterrupt() {
 }
 
 void __attribute__ ((interrupt, no_auto_psv)) _U1TXInterrupt(){
-  IFS0bits.U1TXIF = 0;    // Clear the Transmit Interrupt Flag
+  //IFS0bits.U1TXIF = 0;    // Clear the Transmit Interrupt Flag
     if (! uart_0.tx_size) {
-    U1TXREG=0x49;  // this is for debug
     IEC0bits.U1TXIE = 0;   // Disable Transmit Interrupts
   } else {
     U1TXREG = uart_0.tx_buffer[uart_0.tx_start];

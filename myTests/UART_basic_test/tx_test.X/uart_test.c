@@ -1,10 +1,8 @@
-#define FCY 16000000UL
-
 #include "uart.h"
 #include <string.h>
 #include <stdio.h>
 #include "delay.h"
-#include "p33FJ128MC802.h"
+#include <p33FJ128MC802.h>
 #include <libpic30.h>
 
 #pragma config FNOSC = FRC      // select internal FRC at POR
@@ -50,7 +48,8 @@ while(OSCCONbits.LOCK!=1) {};
     int size=2; //0;
     
 //      delayMs(100); // 625 =~ 1 sec for some reason 
-        __delay_ms(100);
+//        __delay_ms(100);
+    delayMs(100);
         //uint16_t sec = 1;
         //__delay_ms((uint16_t)1000*sec/(FCY/1000000));
 //      sprintf(tx_message, "\nbuffer rx: %d message: ",
@@ -59,7 +58,7 @@ while(OSCCONbits.LOCK!=1) {};
 //        sprintf(tx_message, "\nbuff: %d",
 //	      UART_rxBufferFull(uart));
 
-      sprintf(tx_message, "ABCD");  
+      sprintf(tx_message, "Ciao, sono sveglio! ");  
         
       printString(tx_message);
       //printString(rx_message);
