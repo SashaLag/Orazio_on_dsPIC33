@@ -66,8 +66,9 @@ void _timer0_start(struct Timer* timer){
   //uint16_t ocrval=(uint16_t)(timer->duration_ms*FCY/(256)); //formula in the example. TCY has to be defined somewhere
   //  PR3 = ocrval;   	// Set Timer 3 period (max value is 65535)
   uint16_t ocrval = calculateOcrval(timer->duration_ms, T3CONbits.TCKPS);
-  PR3 = ocrval;
+  //PR3 = ocrval;
   //PR3 = 1562;
+  PR3 = 10000;
   IPC2bits.T3IP = 0x01;     // Set Timer 3 interrupt priority (1)
   IFS0bits.T3IF = 0; 	    // Clear Timer 3 interrupt flag
   IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt

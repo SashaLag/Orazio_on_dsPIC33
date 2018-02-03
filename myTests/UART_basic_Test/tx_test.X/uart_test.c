@@ -46,20 +46,15 @@ while(OSCCONbits.LOCK!=1) {};
     rx_message[1]=0x61;
     rx_message[2]=0;
     int size=2; //0;
-    
-//      delayMs(100); // 625 =~ 1 sec for some reason 
-//        __delay_ms(100);
+
     delayMs(100);
-        //uint16_t sec = 1;
-        //__delay_ms((uint16_t)1000*sec/(FCY/1000000));
 //      sprintf(tx_message, "\nbuffer rx: %d message: ",
 //	      UART_rxBufferFull(uart));
 
 //        sprintf(tx_message, "\nbuff: %d",
 //	      UART_rxBufferFull(uart));
 
-      sprintf(tx_message, "Ciao, sono sveglio! ");  
-        
+      sprintf(tx_message, "Ciao, sono sveglio! Ho tanta voglia di uscire e salutare i miei amici.\n");  
       printString(tx_message);
       //printString(rx_message);
       //uint8_t c= UART_getChar(uart);

@@ -1,3 +1,4 @@
+#define FCY 16000000
 #include "uart.h"
 #include "buffer_utils.h"
 #include "delay.h"
@@ -158,7 +159,8 @@ void UART_putChar(struct myUART* uart, uint8_t c) {
     BUFFER_PUT(uart->tx, UART_BUFFER_SIZE);
   asm volatile ("disi #0"); //enable all user interrupts (atomically)
   IEC0bits.U1TXIE = 1;   // Enable Transmit Interrupt
-  delayMs(10); // more than enough
+  //delayMs(10); // more than enough
+  __delay_us(100);
   }
 
 uint8_t UART_getChar(struct myUART* uart) {
