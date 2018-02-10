@@ -1,8 +1,10 @@
 #include "digio.h"
+#include <p33FJ128MC802.h>
 #define NUM_CHANNELS 14
 
 // initializes the digital io pins of the chip
 void DigIO_init(void) {
+    AD1PCFGL = 0xFFFF;
 }
 
 // returns the number of digital io pins on the chip
