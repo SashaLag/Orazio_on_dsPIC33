@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include <pwm.h>
 
 typedef enum {
   PWMEnabled=1,

@@ -1,9 +1,9 @@
 #include <stdint.h>
 
 typedef struct{
-  volatile uint8_t* in_register;
-  volatile uint8_t* out_register;
-  volatile uint8_t* dir_register;
+  volatile uint16_t* in_register;
+  volatile uint16_t* out_register;
+  volatile uint16_t* dir_register;
   uint8_t bit;
 
   // timer registers for PWM
@@ -17,4 +17,3 @@ typedef struct{
 #define PINS_NUM 14
 
 extern const Pin pins[];
-

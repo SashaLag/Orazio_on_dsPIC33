@@ -43,14 +43,14 @@ LATB = 0x0;
   uart=UART_init("uart_0",115200);
   Timers_init();
   volatile uint16_t do_stuff;
-  struct Timer* timer=Timer_create("timer_0", 100, timerFn, (void*) &do_stuff); 
+  struct Timer* timer=Timer_create("timer_0", 500, timerFn, (void*) &do_stuff); 
   Timer_start(timer);
   uint16_t tick=0;
   while(1) {
     if (do_stuff){
       char buffer[20];
       ++tick;
-      sprintf(buffer, "Tick: [ %05d]\n ", tick);
+      sprintf(buffer, "Tick: [ %05d]\n", tick);
       printString(buffer);
       char reg[50];
       sprintf(reg, "PR3 value: %d\n", PR3);

@@ -1,14 +1,14 @@
 #include "p33FJ128MC802.h"
 #include <string.h>
 
-// here we hook to timer 3 which is of type C 
+// here we hook to timer 3 which is of type C
 // its 16 bit and allows us a decent resolution
 
 #include "timer.h"
 // just 1 timer for the user
 // we hook to timer 3
 #define  NUM_TIMERS 1
-
+#define FCY 16000000
 
 typedef struct Timer{
   int timer_num;
@@ -49,7 +49,7 @@ Timer* Timer_create(char* device,
 // stops and destroys a timer
 void Timer_destroy(struct Timer* timer){
   Timer_stop(timer);
-  asm volatile ("disi #0x3FFF"); // ********** disable all user interrupts (atomically) (SRbits.IPL = 7 in 1 instruction) 
+  asm volatile ("disi #0x3FFF"); // ********** disable all user interrupts (atomically) (SRbits.IPL = 7 in 1 instruction)
     int timer_num=timer->timer_num;
     memset(timer, 0, sizeof(Timer));
     timer->timer_num=timer_num;
@@ -57,18 +57,13 @@ void Timer_destroy(struct Timer* timer){
 }
 
 void _timer0_start(struct Timer* timer){
-  //uint16_t ocrval=(uint16_t)(15.62*timer->duration_ms); // this was ATMEGA
   // Configure Timer 3.
   // EXAMPLE:    PR3 and TCKPS are set to call interrupt every 500 ms
   //                   Period = PR3 * prescaler * Tcy = 58594 * 256 * 33.33ns = 500ms
   T3CON = 0;          		// Clear Timer 3 configuration
   T3CONbits.TCKPS = 3;     // Set timer 3 prescaler (0=1:1, 1=1:8, 2=1:64, 3=1:256)
-  //uint16_t ocrval=(uint16_t)(timer->duration_ms*FCY/(256)); //formula in the example. TCY has to be defined somewhere
-  //  PR3 = ocrval;   	// Set Timer 3 period (max value is 65535)
-  uint16_t ocrval = calculateOcrval(timer->duration_ms, T3CONbits.TCKPS);
-  //PR3 = ocrval;
-  //PR3 = 1562;
-  PR3 = 10000;
+  uint16_t ocrval = calculateOcrval(timer->duration_ms, T3CONbits.TCKPS); // Set Timer 3 period (max value is 65535)
+  PR3 = ocrval;
   IPC2bits.T3IP = 0x01;     // Set Timer 3 interrupt priority (1)
   IFS0bits.T3IF = 0; 	    // Clear Timer 3 interrupt flag
   IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
@@ -103,7 +98,8 @@ uint16_t calculateOcrval(uint16_t duration_ms, uint8_t prescaler_set){
 			prescaler_val = 1;
 			break;
 	}
-	uint16_t ocrval = (16000000/prescaler_val/1000)*duration_ms; // FCY = 16000000;  /1000 because i use [ms] and not [s]
+  // PR3 = ocrval = FCY/prescaler*period_s
+	uint16_t ocrval = (FCY/prescaler_val/1000)*duration_ms; // FCY = 16000000;  /1000 because i use [ms] and not [s]
 	return ocrval;
 }
 
