@@ -1,3 +1,4 @@
+#define FCY 16000000
 #include "uart.h"
 #include "buffer_utils.h"
 #include "delay.h"
@@ -8,9 +9,6 @@
 void setBaud57600(void) {
   #define BAUD 57600
   #define FREQ_SCALE 4
-  #ifndef FCY
-    #define FCY 16000000
-  #endif
       U1BRG = (FCY / (FREQ_SCALE * BAUD)) - 1;
   #undef FREQ_SCALE
   #undef BAUD
@@ -19,9 +17,6 @@ void setBaud57600(void) {
 void setBaud115200(void) {
   #define BAUD 115200
   #define FREQ_SCALE 4
-  #ifndef FCY
-    #define FCY 16000000
-  #endif
       U1BRG = (FCY / (FREQ_SCALE * BAUD)) - 1;
   #undef FREQ_SCALE
   #undef BAUD
