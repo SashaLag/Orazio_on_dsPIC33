@@ -12,24 +12,22 @@ void EEPROM_init(void){
 
 // There are 2 Nop(); after Read and Write. But there is 2 increment. May not be useful
 void EEPROM_read(void* dest_, const uint16_t src, uint16_t size){
-  uint8_t *dest=(uint8_t)dest_;
+  uint8_t *dest=(uint8_t*)dest_;
   uint16_t s=src;
-  uint8_t s_end=src+size;
+  uint16_t s_end=src+size;
   while( s<s_end ){
-    //*dest=DataEERead(s);
-    Nop();
-    Nop();
+    *dest=(uint8_t)DataEERead((unsigned int)s);
     ++s;
     ++dest;
-  }
+  } //there should be two nop() after read. there are incrementations instead.
 }
 
 void EEPROM_write(uint16_t dest, const void* src_,  uint16_t size){
-  //unsigned int *s=(unsigned int*)src_;
-  //unsigned int s_end=(unsigned int)s+(unsigned int)size;
-  //while( s<s_end ){
-  //  DataEEWrite(*s, (unsigned int)dest);
-  //  ++s;
-  //  ++dest;
-  //}
+  const uint8_t *s=(uint8_t*)src_;
+  const uint8_t *s_end=s+size;
+  while( s<s_end ){
+    DataEEWrite((unsigned int)*s, (unsigned int)dest);
+    ++s;
+    ++dest;
+  }
 }

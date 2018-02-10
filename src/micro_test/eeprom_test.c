@@ -18,7 +18,7 @@ int main(void){
   uart=UART_init("uart_0",115200);
   // we write the string on eeprom at address 0
   int size=strlen(message)+1;
-  //EEPROM_write(0, message, size);
+  EEPROM_write(0, message, size);
 
   while(1) {
     char eeprom_buffer[size];
