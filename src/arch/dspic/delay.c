@@ -1,4 +1,4 @@
-#define FCY 16006719UL
+#define FCY 16000000UL
 #include "delay.h"
 #include <libpic30.h>
 
@@ -8,4 +8,3 @@ void delayMs(uint16_t ms __attribute__((unused))){
     --ms;
   }
 }
-// DA CONTROLLARE PERCHE' VIENE RITARDO * 16

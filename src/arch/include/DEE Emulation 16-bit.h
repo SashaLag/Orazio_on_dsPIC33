@@ -86,7 +86,7 @@
 
 #endif
 
-#define ERASE_WRITE_CYCLE_MAX           5
+#define ERASE_WRITE_CYCLE_MAX           100
 #define NUMBER_OF_ROWS_IN_PAGE          (_FLASH_PAGE / _FLASH_ROW)
 #define PAGE_AVAILABLE                  1
 #define PAGE_CURRENT                    0
