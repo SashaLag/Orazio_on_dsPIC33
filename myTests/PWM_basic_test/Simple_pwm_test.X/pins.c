@@ -46,9 +46,9 @@ const Pin pins[] =
       .out_register=&LATB,
       .dir_register=&TRISB,
       .bit=15,
-      .tcc_register=&TCCR3A,
+      .tcc_register=&PWM1CON1,
       .oc_register=&P1DC1,     // here is stored the duty cycle
-      .com_mask=(1<<COM3B0)|(1<<COM3B1)
+      .com_mask=1<<0 // enable PWM1L1
     },
     //3 PWM1H1  (SAME dutycycle as PWM1L1)
     {
@@ -56,9 +56,9 @@ const Pin pins[] =
       .out_register=&LATB,
       .dir_register=&TRISB,
       .bit=14,
-      .tcc_register=&TCCR3A,
+      .tcc_register=&PWM1CON1,
       .oc_register=&P1DC1,
-      .com_mask=(1<<COM3C0)|(1<<COM3C1)
+      .com_mask=1<<4 // enable PWM1H1
     },
     //4 PWM1L2
     {
@@ -66,9 +66,9 @@ const Pin pins[] =
       .out_register=&LATB,
       .dir_register=&TRISB,
       .bit=13,
-      .tcc_register=&TCCR0A,
+      .tcc_register=&PWM1CON1,
       .oc_register=&P1DC2,
-      .com_mask=(1<<COM0B0)|(1<<COM0B1)
+      .com_mask=1<<1 // enable PWM1L2
     },
     //5 PWM1H2  (SAME dutycycle as PWM1L2)
     {
@@ -76,9 +76,9 @@ const Pin pins[] =
       .out_register=&LATB,
       .dir_register=&TRISB,
       .bit=12,
-      .tcc_register=&TCCR3A,
+      .tcc_register=&PWM1CON1,
       .oc_register=&P1DC2,
-      .com_mask=(1<<COM3A0)|(1<<COM3A1)
+      .com_mask=1<<5 // enable PWM1H2
     },
     //6 PWM1L3
     {
@@ -86,9 +86,9 @@ const Pin pins[] =
       .out_register=&LATB,
       .dir_register=&TRISB,
       .bit=11,
-      .tcc_register=&TCCR4A,
+      .tcc_register=&PWM1CON1,
       .oc_register=&P1DC3,
-      .com_mask=(1<<COM4A0)|(1<<COM4A1)
+      .com_mask=1<<2 // enable PWM1L3
     },
     //7 PWM1H3  (SAME dutycycle as PWM1L3)
     {
@@ -96,9 +96,9 @@ const Pin pins[] =
       .out_register=&LATB,
       .dir_register=&TRISB,
       .bit=10,
-      .tcc_register=&TCCR4A,
+      .tcc_register=&PWM1CON1,
       .oc_register=&P1DC3,
-      .com_mask=(1<<COM3B0)|(1<<COM3B1)
+      .com_mask=1<<6 // enable PWM1H3
     },
     //8 PWM (not in dspic)
     {

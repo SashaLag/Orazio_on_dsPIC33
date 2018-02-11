@@ -2,6 +2,7 @@
 #include <p33FJ128MC802.h>
 #include <pwm12.h>
 #define NUM_CHANNELS 14
+#define PINS_NUM 14
 
 // here we use timers 0-4, in 8 bit mode
 // regardless if they are 16 bit
@@ -10,46 +11,29 @@
 // initializes the pwm subsystem
 PWMError PWM_init(void){
   asm volatile ("disi #0x3FFF"); // disable all user interrupts (atomically)
-/* not here, it should go to enable function
-  unsigned int sptime = 0x0;
-  unsigned int config1 = PWM1_EN             //
-                         & PWM1_IDLE_CON
-                         & PWM1_OP_SCALE1
-                         & PWM1_IPCLK_SCALE1
-                         & PWM1_MOD_UPDN;
-
-  unsigned int config2 = PWM1_MOD1_IND
-                         & PWM1_PEN1L
-                         & PWM1_PDIS1H
-                         & PWM1_MOD2_IND
-                         & PWM1_PEN2L
-                         & PWM1_PDIS2H 
-                         & PWM1_PDIS3H
-                         & PWM1_PDIS3L;
-
-  unsigned int config3 = PWM1_SEVOPS1
-                         & PWM1_OSYNC_PWM
-                         & PWM1_UEN;
- OpenMCPWM1(period, sptime, config1, config2, config3);
-*/
-  uint16_t period;
+  // for updown count mode: P1TPER = FCY/(Fpwm*P1TMRprescaler*2)-1
+  // FCY = 16000000; Fpwm = 20000; P1TMR = 1 => P1TPER = 499
+  uint16_t period = 499;
   P1TPERbits.PTPER = period; // PWM Time Base Period Value
+  P1TMR = 0; // start counting from 0
   P1SECMPbits.SEVTCMP = 0; // Special Event Compare Value - default
   P1TCONbits.PTSIDL = 0; // PWM time base runs in CPU idle mode
   P1TCONbits.PTOPS = 0; // PWM time base output postscale 1:1
   P1TCONbits.PTCKPS = 0; // PWM time base input clock period is TCY (1:1 prescale)
-  //P1TCONbits.PTMOD = 2; // PWM time base operates in Continuous Up/Down Count mode
-  P1TCONbits.PTMOD = 0; // PWM time base operates in Free Running mode
+  P1TCONbits.PTMOD = 2; // PWM time base operates in Continuous Up/Down Count mode
+  //P1TCONbits.PTMOD = 0; // PWM time base operates in Free Running mode
+  PWM1CON1bits.PMOD1 = 1; //PWM1 in indipendent mode
+  PWM1CON1bits.PMOD2 = 1; //PWM2 in indipendent mode
+  PWM1CON1bits.PMOD3 = 1; //PWM3 in indipendent mode
 
-
-/* #include ConfigIntMCPWM.c, maybe not needed
+  PWM1CON2bits.IUE = 1; // immediate update of PWM enabled
+/*
   uint16_t config = PWM_INT_EN
                     & PWM_INT_PR4
                     & PWM_FLTA_DIS_INT
                     &PWM_FLTB_DIS_INT
   ConfigIntMCPWM1(config);
-  */
-
+*/
   asm volatile ("disi #0"); //enable all user interrupts (atomically)
   return PWMSuccess;
 }

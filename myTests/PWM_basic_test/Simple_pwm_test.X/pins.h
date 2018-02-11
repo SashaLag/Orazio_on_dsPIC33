@@ -7,9 +7,9 @@ typedef struct{
   uint8_t bit;
 
   // timer registers for PWM
-  volatile uint8_t* tcc_register;
-  volatile uint8_t* oc_register;
-  const uint8_t com_mask;
+  volatile uint16_t* tcc_register;
+  volatile uint16_t* oc_register;
+  const uint16_t com_mask;
 
   // interrupt
 }  Pin;
