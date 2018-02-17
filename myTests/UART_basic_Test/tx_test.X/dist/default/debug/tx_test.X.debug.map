@@ -25,11 +25,16 @@ Command:
   build/default/debug/uart.o \
   build/default/debug/uart_test.o \
   build/default/debug/delay.o \
+  -TC:\\Users\\Daniele\\AppData\\Local\\Temp\\tmp00002c34.00 \
+  -TC:\\Users\\Daniele\\AppData\\Local\\Temp\\tmp00002c34.01 \
+  -TC:\\Users\\Daniele\\AppData\\Local\\Temp\\tmp00002c34.02 \
+  -TC:\\Users\\Daniele\\AppData\\Local\\Temp\\tmp00002c34.03 \
+  -TC:\\Users\\Daniele\\AppData\\Local\\Temp\\tmp00002c34.04 \
   --defsym=__MPLAB_BUILD=1 \
   --defsym=__MPLAB_DEBUG=1 \
   --defsym=__DEBUG=1 \
-  --defsym=__MPLAB_DEBUGGER_SIMULATOR=1 \
-  -Tp33FJ128MC802.gld.00 \
+  --defsym=__MPLAB_DEBUGGER_ICD3=1 \
+  -Tp33FJ128MC802.gld.05 \
   --stack=16 \
   --check-sections \
   --data-init \
@@ -100,10 +105,15 @@ Data Memory  [Origin = 0x800, Length = 0x4000]
 
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
-.nbss                        0x800                   0             0x2  (2)
-.bss                         0x802                   0           0x40c  (1036)
+reserve_data_0x800           0x800                0x20            0x20  (32)
+reserve_data_0x820           0x820                 0x2             0x2  (2)
+reserve_data_0x822           0x822                 0x2             0x2  (2)
+reserve_data_0x824           0x824                 0x2             0x2  (2)
+reserve_data_0x826           0x826                0x2a            0x2a  (42)
+.nbss                        0x850                   0             0x2  (2)
+.bss                         0x852                   0           0x40c  (1036)
 
-                 Total data memory used (bytes):          0x40e  (1038) 6%
+                 Total data memory used (bytes):          0x45e  (1118) 6%
 
 
 Dynamic Memory Usage
@@ -111,18 +121,18 @@ Dynamic Memory Usage
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
 heap                             0                                   0  (0)
-stack                        0xc0e                              0x3bf2  (15346)
+stack                        0xc5e                              0x3ba2  (15266)
 
-                 Maximum dynamic memory (bytes):         0x3bf2  (15346)
+                 Maximum dynamic memory (bytes):         0x3ba2  (15266)
 
 
 External Symbols in Data Memory (by address):
 
-                    0x0800                  _uart
+                    0x0850                  _uart
 
 External Symbols in Data Memory (by name):
 
-                    0x0800                  _uart
+                    0x0850                  _uart
 
 External Symbols in Program Memory (by address):
 
@@ -218,10 +228,35 @@ Linker script and memory map
 LOAD build/default/debug/uart.o
 LOAD build/default/debug/uart_test.o
 LOAD build/default/debug/delay.o
+
+reserve_data_0x800
+                    0x0800         0x20
+                    0x0820                  . = 0x20
+ *fill*             0x0800         0x2000
+
+reserve_data_0x820
+                    0x0820          0x2
+                    0x0822                  . = 0x2
+ *fill*             0x0820          0x200
+
+reserve_data_0x822
+                    0x0822          0x2
+                    0x0824                  . = 0x2
+ *fill*             0x0822          0x200
+
+reserve_data_0x824
+                    0x0824          0x2
+                    0x0826                  . = 0x2
+ *fill*             0x0824          0x200
+
+reserve_data_0x826
+                    0x0826         0x2a
+                    0x0850                  . = 0x2a
+ *fill*             0x0826         0x2a00
                     0x0001                  __MPLAB_BUILD = 0x1
                     0x0001                  __MPLAB_DEBUG = 0x1
                     0x0001                  __DEBUG = 0x1
-                    0x0001                  __MPLAB_DEBUGGER_SIMULATOR = 0x1
+                    0x0001                  __MPLAB_DEBUGGER_ICD3 = 0x1
 LOAD c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib/dsPIC33F\libp33FJ128MC802-elf.a
 LOAD c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libfx-elf.a
                     0xf80000                  __FBS = 0xf80000
@@ -1528,12 +1563,12 @@ __c30_signature
  __c30_signature
                   0x000254          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(strlen.XX_eo)
 
-.nbss               0x0800          0x2
- .nbss              0x0800          0x2 build/default/debug/uart_test.o
-                    0x0800                  _uart
+.nbss               0x0850          0x2
+ .nbss              0x0850          0x2 build/default/debug/uart_test.o
+                    0x0850                  _uart
 
-.bss                0x0802        0x40c
- .bss               0x0802        0x40c build/default/debug/uart.o
+.bss                0x0852        0x40c
+ .bss               0x0852        0x40c build/default/debug/uart.o
 
 .ivt._U1RXInterrupt
                   0x00002a          0x2

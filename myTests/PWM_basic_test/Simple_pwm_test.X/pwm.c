@@ -1,8 +1,7 @@
 #include "pwm.h"
 #include <p33FJ128MC802.h>
-#include <pwm12.h>
+#include "pins.h"
 #define NUM_CHANNELS 14
-#define PINS_NUM 14
 
 // here we use timers 0-4, in 8 bit mode
 // regardless if they are 16 bit
@@ -25,8 +24,9 @@ PWMError PWM_init(void){
   PWM1CON1bits.PMOD1 = 1; //PWM1 in indipendent mode
   PWM1CON1bits.PMOD2 = 1; //PWM2 in indipendent mode
   PWM1CON1bits.PMOD3 = 1; //PWM3 in indipendent mode
-
+  P1TCONbits.PTEN = 1; //PWM1 Time Base Timer Enable bit
   PWM1CON2bits.IUE = 1; // immediate update of PWM enabled
+  //P1OVDCON = 0x3F00; // no override. Override disables PWM
 /*
   uint16_t config = PWM_INT_EN
                     & PWM_INT_PR4
@@ -40,36 +40,58 @@ PWMError PWM_init(void){
 
 // how many pwm on this chip?
 uint8_t PWM_numChannels(void){
-  return NUM_CHANNELS;
+  return PINS_NUM;
 }
 
 // what was the period i set in the pwm subsystem
 // might only require to adjust the prescaler
 PWMError PWM_isEnabled(uint8_t c) {
-  if (c>=NUM_CHANNELS)
+  if (c>=PINS_NUM)
     return PWMChannelOutOfBound;
-
+  const Pin* pin = pins+c;
+  if (!pin->tcc_register)
+    return PWMChannelOutOfBound;
+  if ((*pin->tcc_register & pin->com_mask)==0)
+    return 0;
   return PWMEnabled;
 }
 
 // sets the output on a pwm channel
 PWMError PWM_enable(uint8_t c, uint8_t enable){
-  if (c>=NUM_CHANNELS)
+  if (c>=PINS_NUM)
     return PWMChannelOutOfBound;
-    return PWMSuccess;
+  const Pin* pin = pins+c;
+  if (!pin->tcc_register)
+    return PWMChannelOutOfBound;
+  *pin->oc_register=0;
+  if (enable){
+    *pin->tcc_register |= pin->com_mask;
+    *pin->dir_register    |= (1<<pin->bit);
+  } else {
+    *pin->tcc_register &= ~pin->com_mask;
+    *pin->dir_register    &= ~(1<<pin->bit);
+  }
+  return PWMSuccess;
 }
 
 
 // what was the duty cycle I last set?
 uint8_t PWM_getDutyCycle(uint8_t c){
-  if (c>=NUM_CHANNELS)
+  if (c>=PINS_NUM)
     return PWMChannelOutOfBound;
-  return 0;
+  const Pin* pin = pins+c;
+  if (!pin->tcc_register)
+    return PWMChannelOutOfBound;
+  return 255-*pin->oc_register;
 }
 
 // sets the duty cycle
  PWMError PWM_setDutyCycle(uint8_t c, uint8_t duty_cycle){
-  if (c>=NUM_CHANNELS)
+  if (c>=PINS_NUM)
     return PWMChannelOutOfBound;
+  const Pin* pin = pins+c;
+  if (!pin->tcc_register)
+    return PWMChannelOutOfBound;
+  *pin->oc_register = 255-duty_cycle;
   return PWMSuccess;
 }

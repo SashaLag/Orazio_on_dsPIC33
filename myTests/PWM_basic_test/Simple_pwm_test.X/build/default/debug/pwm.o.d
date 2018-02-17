@@ -1,3 +1,4 @@
 build/default/debug/pwm.o:  \
 pwm.c  \
-pwm.h 
+pwm.h  \
+pins.h 

@@ -103,12 +103,12 @@ section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200               0xbf4          0x11ee  (4590)
 .const                       0xdf4                0xe4           0x156  (342)
-.text                        0xed8               0x400           0x600  (1536)
-.dinit                      0x12d8                0x44            0x66  (102)
-.text                       0x131c                0x22            0x33  (51)
-.init.delay32               0x133e                0x1c            0x2a  (42)
+.text                        0xed8               0x4f4           0x76e  (1902)
+.dinit                      0x13cc                0x44            0x66  (102)
+.text                       0x1410                0x22            0x33  (51)
+.init.delay32               0x1432                0x1c            0x2a  (42)
 
-                 Total program memory used (bytes):         0x1a07  (6663) 5%
+                 Total program memory used (bytes):         0x1b75  (7029) 5%
 
 
 Ivt Memory  [Origin = 0x4, Length = 0xfc]
@@ -188,26 +188,26 @@ External Symbols in Program Memory (by address):
                   0x001022                  _UART_txBufferFree
                   0x001036                  _UART_putChar
                   0x001088                  _UART_getChar
-                  0x0010e4                  _printString
-                  0x001112                  _printPWMStatus
-                  0x0011a2                  _main
-                  0x00122c                  _PWM_init
-                  0x00127c                  _PWM_numChannels
-                  0x001284                  _PWM_isEnabled
-                  0x001298                  _PWM_enable
-                  0x0012ae                  _PWM_getDutyCycle
-                  0x0012c2                  _PWM_setDutyCycle
-                  0x00131c                  _delayMs
-                  0x00133e                  ___delay32
+                  0x0010e4                  _PWM_init
+                  0x001136                  _PWM_numChannels
+                  0x00113e                  _PWM_isEnabled
+                  0x00117e                  _PWM_enable
+                  0x001214                  _PWM_getDutyCycle
+                  0x001248                  _PWM_setDutyCycle
+                  0x001284                  _printString
+                  0x0012b2                  _printPWMStatus
+                  0x001342                  _main
+                  0x001410                  _delayMs
+                  0x001432                  ___delay32
 
 External Symbols in Program Memory (by name):
 
-                  0x001298                  _PWM_enable
-                  0x0012ae                  _PWM_getDutyCycle
-                  0x00122c                  _PWM_init
-                  0x001284                  _PWM_isEnabled
-                  0x00127c                  _PWM_numChannels
-                  0x0012c2                  _PWM_setDutyCycle
+                  0x00117e                  _PWM_enable
+                  0x001214                  _PWM_getDutyCycle
+                  0x0010e4                  _PWM_init
+                  0x00113e                  _PWM_isEnabled
+                  0x001136                  _PWM_numChannels
+                  0x001248                  _PWM_setDutyCycle
                   0x001088                  _UART_getChar
                   0x000eec                  _UART_init
                   0x001036                  _UART_putChar
@@ -224,7 +224,7 @@ External Symbols in Program Memory (by name):
                   0x000dac                  __Vacopy
                   0x000636                  ___Printf_cdnopuxX
                   0x00079a                  ___Putfld_cdnopuxX
-                  0x00133e                  ___delay32
+                  0x001432                  ___delay32
                   0x00049e                  ___divdi3
                   0x000db0                  ___divsi3
                   0x0004fe                  ___moddi3
@@ -240,12 +240,12 @@ External Symbols in Program Memory (by name):
                   0x00023c                  __psv_init
                   0x000200                  __resetPRI
                   0x000618                  __sprintf_cdnopuxX
-                  0x00131c                  _delayMs
-                  0x0011a2                  _main
+                  0x001410                  _delayMs
+                  0x001342                  _main
                   0x0005f0                  _memcpy
                   0x000df4                  _pins
-                  0x001112                  _printPWMStatus
-                  0x0010e4                  _printString
+                  0x0012b2                  _printPWMStatus
+                  0x001284                  _printString
                   0x000ee2                  _setBaud115200
                   0x000ed8                  _setBaud57600
                   0x0009be                  _strchr
@@ -438,30 +438,30 @@ __FUID3
 .comment
  *(.comment)
 
-.debug_info       0x000000       0x2312
+.debug_info       0x000000       0x2437
  *(.debug_info)
  .debug_info      0x000000        0x1bb build/default/debug/delay.o
  .debug_info      0x0001bb        0x35c build/default/debug/pins.o
- .debug_info      0x000517        0x810 build/default/debug/pwm.o
- .debug_info      0x000d27        0x34d build/default/debug/pwm_test.o
- .debug_info      0x001074       0x129e build/default/debug/uart.o
+ .debug_info      0x000517        0x935 build/default/debug/pwm.o
+ .debug_info      0x000e4c        0x34d build/default/debug/pwm_test.o
+ .debug_info      0x001199       0x129e build/default/debug/uart.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev     0x000000        0x475
+.debug_abbrev     0x000000        0x4c0
  *(.debug_abbrev)
  .debug_abbrev    0x000000         0x50 build/default/debug/delay.o
  .debug_abbrev    0x000050         0xa4 build/default/debug/pins.o
- .debug_abbrev    0x0000f4        0x114 build/default/debug/pwm.o
- .debug_abbrev    0x000208         0xd4 build/default/debug/pwm_test.o
- .debug_abbrev    0x0002dc        0x199 build/default/debug/uart.o
+ .debug_abbrev    0x0000f4        0x15f build/default/debug/pwm.o
+ .debug_abbrev    0x000253         0xd4 build/default/debug/pwm_test.o
+ .debug_abbrev    0x000327        0x199 build/default/debug/uart.o
 
-.debug_line       0x000000        0x4a2
+.debug_line       0x000000        0x4c8
  *(.debug_line)
  .debug_line      0x000000         0x8a build/default/debug/delay.o
  .debug_line      0x00008a         0xe3 build/default/debug/pins.o
- .debug_line      0x00016d        0x119 build/default/debug/pwm.o
- .debug_line      0x000286         0xb6 build/default/debug/pwm_test.o
- .debug_line      0x00033c        0x166 build/default/debug/uart.o
+ .debug_line      0x00016d        0x13f build/default/debug/pwm.o
+ .debug_line      0x0002ac         0xb6 build/default/debug/pwm_test.o
+ .debug_line      0x000362        0x166 build/default/debug/uart.o
 
 .debug_frame      0x000000        0x2f4
  *(.debug_frame)
@@ -1600,66 +1600,66 @@ LOAD default_isr
 LOAD data_init
 
 .debug_pubtypes
-                  0x000060        0x29b
+                  0x000060        0x2a3
  .debug_pubtypes
                   0x000060         0x1f build/default/debug/delay.o
  .debug_pubtypes
                   0x00007f         0x33 build/default/debug/pins.o
  .debug_pubtypes
-                  0x0000b2         0xe7 build/default/debug/pwm.o
+                  0x0000b2         0xef build/default/debug/pwm.o
  .debug_pubtypes
-                  0x000199         0x1e build/default/debug/pwm_test.o
+                  0x0001a1         0x1e build/default/debug/pwm_test.o
  .debug_pubtypes
-                  0x0001b7        0x144 build/default/debug/uart.o
+                  0x0001bf        0x144 build/default/debug/uart.o
 
 __c30_signature
-                  0x0002fb         0x8a
+                  0x000303         0x8a
  __c30_signature
-                  0x0002fb          0x6 build/default/debug/delay.o
+                  0x000303          0x6 build/default/debug/delay.o
  __c30_signature
-                  0x000301          0x6 build/default/debug/pins.o
+                  0x000309          0x6 build/default/debug/pins.o
  __c30_signature
-                  0x000307          0x6 build/default/debug/pwm.o
+                  0x00030f          0x6 build/default/debug/pwm.o
  __c30_signature
-                  0x00030d          0x6 build/default/debug/pwm_test.o
+                  0x000315          0x6 build/default/debug/pwm_test.o
  __c30_signature
-                  0x000313          0x6 build/default/debug/uart.o
+                  0x00031b          0x6 build/default/debug/uart.o
  __c30_signature
-                  0x000319          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o)
+                  0x000321          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o)
  __c30_signature
-                  0x00031f          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.a(data_init_standard.o)
+                  0x000327          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.a(data_init_standard.o)
  __c30_signature
-                  0x000325          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
+                  0x00032d          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
  __c30_signature
-                  0x00032b          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(divmoddi3.eo)
+                  0x000333          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(divmoddi3.eo)
  __c30_signature
-                  0x000331          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(muldi3.eo)
+                  0x000339          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(muldi3.eo)
  __c30_signature
-                  0x000337          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(umuldi3.eo)
+                  0x00033f          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(umuldi3.eo)
  __c30_signature
-                  0x00033d          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(memcpy.XX_eo)
+                  0x000345          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(memcpy.XX_eo)
  __c30_signature
-                  0x000343          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(strlen.XX_eo)
+                  0x00034b          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(strlen.XX_eo)
  __c30_signature
-                  0x000349          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(sprintf_cdnopuxX.XXeo)
+                  0x000351          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(sprintf_cdnopuxX.XXeo)
  __c30_signature
-                  0x00034f          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xprintf_cdnopuxX.XXeo)
+                  0x000357          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xprintf_cdnopuxX.XXeo)
  __c30_signature
-                  0x000355          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xputfld_cdnopuxX.XXeo)
+                  0x00035d          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xputfld_cdnopuxX.XXeo)
  __c30_signature
-                  0x00035b          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(strchr.XX_eo)
+                  0x000363          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(strchr.XX_eo)
  __c30_signature
-                  0x000361          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xlitob.XX_eo)
+                  0x000369          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xlitob.XX_eo)
  __c30_signature
-                  0x000367          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xputtxt.XX_eo)
+                  0x00036f          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xputtxt.XX_eo)
  __c30_signature
-                  0x00036d          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xvacopy.XX_eo)
+                  0x000375          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xvacopy.XX_eo)
  __c30_signature
-                  0x000373          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(divsi3.eo)
+                  0x00037b          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(divsi3.eo)
  __c30_signature
-                  0x000379          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(udivsi3.eo)
+                  0x000381          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(udivsi3.eo)
  __c30_signature
-                  0x00037f          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(umodsi3.eo)
+                  0x000387          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(umodsi3.eo)
 
 .nbss               0x0800          0x2
  .nbss              0x0800          0x2 build/default/debug/pwm_test.o
@@ -1687,7 +1687,7 @@ __c30_signature
                     0x8df4                  _pins
  .const             0x8eb8         0x20 build/default/debug/pwm_test.o
 
-.text             0x000ed8        0x400
+.text             0x000ed8        0x4f4
  .text            0x000ed8        0x20c build/default/debug/uart.o
                   0x000ed8                  _setBaud57600
                   0x000ee2                  _setBaud115200
@@ -1699,25 +1699,25 @@ __c30_signature
                   0x001022                  _UART_txBufferFree
                   0x001036                  _UART_putChar
                   0x001088                  _UART_getChar
- .text            0x0010e4        0x148 build/default/debug/pwm_test.o
-                  0x0010e4                  _printString
-                  0x001112                  _printPWMStatus
-                  0x0011a2                  _main
- .text            0x00122c         0xac build/default/debug/pwm.o
-                  0x00122c                  _PWM_init
-                  0x00127c                  _PWM_numChannels
-                  0x001284                  _PWM_isEnabled
-                  0x001298                  _PWM_enable
-                  0x0012ae                  _PWM_getDutyCycle
-                  0x0012c2                  _PWM_setDutyCycle
+ .text            0x0010e4        0x1a0 build/default/debug/pwm.o
+                  0x0010e4                  _PWM_init
+                  0x001136                  _PWM_numChannels
+                  0x00113e                  _PWM_isEnabled
+                  0x00117e                  _PWM_enable
+                  0x001214                  _PWM_getDutyCycle
+                  0x001248                  _PWM_setDutyCycle
+ .text            0x001284        0x148 build/default/debug/pwm_test.o
+                  0x001284                  _printString
+                  0x0012b2                  _printPWMStatus
+                  0x001342                  _main
 
-.dinit            0x0012d8         0x44
- .dinit           0x0012d8         0x44 data_init
+.dinit            0x0013cc         0x44
+ .dinit           0x0013cc         0x44 data_init
 
-.text             0x00131c         0x22
- .text            0x00131c         0x22 build/default/debug/delay.o
-                  0x00131c                  _delayMs
+.text             0x001410         0x22
+ .text            0x001410         0x22 build/default/debug/delay.o
+                  0x001410                  _delayMs
 
-.init.delay32     0x00133e         0x1c
- .init.delay32    0x00133e         0x1c c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
-                  0x00133e                  ___delay32
+.init.delay32     0x001432         0x1c
+ .init.delay32    0x001432         0x1c c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
+                  0x001432                  ___delay32

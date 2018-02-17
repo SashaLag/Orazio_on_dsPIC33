@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <executable name="dist/default/production/Simple_pwm_test.X.production.elf">
+    <memory name="data">
+      <units>bytes</units>
+      <length>16384</length>
+      <used>1098</used>
+      <free>15286</free>
+    </memory>
+    <memory name="program">
+      <units>bytes</units>
+      <length>131328</length>
+      <used>7026</used>
+      <free>124302</free>
+    </memory>
+  </executable>
+</project>

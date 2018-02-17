@@ -30,12 +30,12 @@ void printPWMStatus(void){
 int main(void){
   // all pins as inputs with pull up resistors
   PWM_init();
-  
+
   // we enable all pwm outputs
   for (uint8_t i=0; i<PWM_numChannels(); ++i)
     PWM_enable(i, 1);
 
-  
+
   uart=UART_init("uart_0",115200);
   printPWMStatus();
   uint8_t start_pin=0;
@@ -43,7 +43,8 @@ int main(void){
     for (int k=0; k<PWM_numChannels(); ++k){
       uint8_t pin=(start_pin+k)%PWM_numChannels();
       PWM_setDutyCycle(pin,(k*255)/PWM_numChannels());
-    } 
+      //PWM_setDutyCycle(pin,20);
+    }
     printPWMStatus();
     ++start_pin;
     if (start_pin>=PWM_numChannels())
