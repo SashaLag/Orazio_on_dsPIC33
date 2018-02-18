@@ -26,7 +26,7 @@ PWMError PWM_init(void){
   PWM1CON1bits.PMOD3 = 1; //PWM3 in indipendent mode
   P1TCONbits.PTEN = 1; //PWM1 Time Base Timer Enable bit
   PWM1CON2bits.IUE = 1; // immediate update of PWM enabled
-  //P1OVDCON = 0x3F00; // no override. Override disables PWM
+  P1OVDCON = 0x3F00; // no override. Override disables PWM
 /*
   uint16_t config = PWM_INT_EN
                     & PWM_INT_PR4
