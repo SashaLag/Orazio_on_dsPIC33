@@ -46,20 +46,21 @@ int main(void){
 
   // all pins as output
   for (uint8_t i=0; i<DigIO_numChannels(); ++i)
-    DigIO_setDirection(i, 1);
-
-
+    DigIO_setDirection(i, 1); // CAREFUL!! DSPIC IS OPPOSITE OF ATMEGA FOR I/O DIRECTION
+                              // in dspic TRISB = 1 is input
+                              //          TRISB = 0 is output
   uart=UART_init("uart_0",115200);
   uint8_t start_pin=0;
   while(1) {
-    for (int k=0; k<DigIO_numChannels(); ++k){
+   for (int k=0; k<DigIO_numChannels(); ++k){
       uint8_t pin=(start_pin+k)%DigIO_numChannels();
       DigIO_setValue(pin,k%2);
     }
+
     printDigioStatus();
     ++start_pin;
     if (start_pin>=DigIO_numChannels())
       start_pin=0;
-    delayMs(1000);
+    delayMs(100);
   }
 }
