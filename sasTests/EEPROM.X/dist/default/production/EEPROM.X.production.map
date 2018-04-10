@@ -89,7 +89,7 @@ section                    address   length (PC units)   length (bytes) (dec)
 .const                       0x714                0x42            0x63  (99)
 .text                        0x756                0x74            0xae  (174)
 .dinit                       0x7ca                0x34            0x4e  (78)
-_06B4EBA05a7ef614            0x800              0x4000          0x6000  (24576)
+_06AEFBA05ac79285            0x800              0x4000          0x6000  (24576)
 .text                       0x4800               0xb94          0x115e  (4446)
 .text                       0x5394                0x2a            0x3f  (63)
 .init.delay32               0x53be                0x1c            0x2a  (42)
@@ -1657,9 +1657,9 @@ __c30_signature
  .ivt._U1TXInterrupt
                   0x00002c          0x2 build/default/production/_ext/1023558067/uart.o
 
-_06B4EBA05a7ef614
+_06AEFBA05ac79285
                     0x8800       0x4000 load address 0x000800  
- _06B4EBA05a7ef614
+ _06AEFBA05ac79285
                     0x8800       0x4000 build/default/production/_ext/1023558067/DEE Emulation 16-bit.o
                     0x8800                  _emulationPages
 

@@ -22,11 +22,16 @@ Command:
   build/default/debug/_ext/2113237976/eeprom_test.o \
   build/default/debug/_ext/1023558067/delay.o \
   build/default/debug/_ext/1023558067/uart.o \
+  -TC:\\Users\\aless\\AppData\\Local\\Temp\\tmp00005d38.00 \
+  -TC:\\Users\\aless\\AppData\\Local\\Temp\\tmp00005d38.01 \
+  -TC:\\Users\\aless\\AppData\\Local\\Temp\\tmp00005d38.02 \
+  -TC:\\Users\\aless\\AppData\\Local\\Temp\\tmp00005d38.03 \
+  -TC:\\Users\\aless\\AppData\\Local\\Temp\\tmp00005d38.04 \
   --defsym=__MPLAB_BUILD=1 \
   --defsym=__MPLAB_DEBUG=1 \
   --defsym=__DEBUG=1 \
-  --defsym=__MPLAB_DEBUGGER_SIMULATOR=1 \
-  -Tp33FJ128MC802.gld.00 \
+  --defsym=__MPLAB_DEBUGGER_PK3=1 \
+  -Tp33FJ128MC802.gld.05 \
   --stack=16 \
   --check-sections \
   --data-init \
@@ -90,16 +95,15 @@ section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200               0x514           0x79e  (1950)
 .const                       0x714                0x42            0x63  (99)
-.text                        0x756                0xa6            0xf9  (249)
-_06B0EBA05a7ee5a3            0x800              0x4000          0x6000  (24576)
-.text                       0x4800               0xa9c           0xfea  (4074)
-.text                       0x529c                0x74            0xae  (174)
-.dinit                      0x5310                0x34            0x4e  (78)
-.text                       0x5344                0x2a            0x3f  (63)
-.init.delay32               0x536e                0x1c            0x2a  (42)
-.text                       0x538a                0x18            0x24  (36)
+.text                        0x756                0x74            0xae  (174)
+.dinit                       0x7ca                0x34            0x4e  (78)
+_06B3EBA05ac792d9            0x800              0x4000          0x6000  (24576)
+.text                       0x4800               0xb94          0x115e  (4446)
+.text                       0x5394                0x2a            0x3f  (63)
+.init.delay32               0x53be                0x1c            0x2a  (42)
+.text                       0x53da                0x18            0x24  (36)
 
-                 Total program memory used (bytes):         0x7a6d  (31341) 23%
+                 Total program memory used (bytes):         0x7ae8  (31464) 23%
 
 
 Ivt Memory  [Origin = 0x4, Length = 0xfc]
@@ -114,12 +118,17 @@ Data Memory  [Origin = 0x800, Length = 0x4000]
 
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
-.nbss                        0x800                   0             0x4  (4)
-.ndata                       0x804                   0             0x2  (2)
-.bss                         0x806                   0           0x40c  (1036)
-.data                        0xc12                   0            0x1a  (26)
+reserve_data_0x800           0x800                0x20            0x20  (32)
+reserve_data_0x820           0x820                 0x2             0x2  (2)
+reserve_data_0x822           0x822                 0x2             0x2  (2)
+reserve_data_0x824           0x824                 0x2             0x2  (2)
+reserve_data_0x826           0x826                0x2a            0x2a  (42)
+.nbss                        0x850                   0             0x4  (4)
+.ndata                       0x854                   0             0x2  (2)
+.bss                         0x856                   0           0x40c  (1036)
+.data                        0xc62                   0            0x1a  (26)
 
-                 Total data memory used (bytes):          0x42c  (1068) 6%
+                 Total data memory used (bytes):          0x47c  (1148) 7%
 
 
 Dynamic Memory Usage
@@ -127,22 +136,22 @@ Dynamic Memory Usage
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
 heap                             0                                   0  (0)
-stack                        0xc2c                              0x3bd4  (15316)
+stack                        0xc7c                              0x3b84  (15236)
 
-                 Maximum dynamic memory (bytes):         0x3bd4  (15316)
+                 Maximum dynamic memory (bytes):         0x3b84  (15236)
 
 
 External Symbols in Data Memory (by address):
 
-                    0x0800                  _dataEEFlags
-                    0x0802                  _uart
-                    0x0804                  _message
+                    0x0850                  _dataEEFlags
+                    0x0852                  _uart
+                    0x0854                  _message
 
 External Symbols in Data Memory (by name):
 
-                    0x0800                  _dataEEFlags
-                    0x0804                  _message
-                    0x0802                  _uart
+                    0x0850                  _dataEEFlags
+                    0x0854                  _message
+                    0x0852                  _uart
 
 External Symbols in Program Memory (by address):
 
@@ -165,8 +174,9 @@ External Symbols in Program Memory (by address):
                   0x000580                  _strchr
                   0x000598                  __Puttxt
                   0x000710                  __Vacopy
-                  0x000756                  _printString
-                  0x000784                  _main
+                  0x000756                  _EEPROM_init
+                  0x000760                  _EEPROM_read
+                  0x000798                  _EEPROM_write
                   0x000800                  _emulationPages
                   0x004800                  _UnlockWrite
                   0x004834                  _GetPageStatus
@@ -186,31 +196,30 @@ External Symbols in Program Memory (by address):
                   0x0051dc                  _UART_txBufferFree
                   0x0051f0                  _UART_putChar
                   0x005240                  _UART_getChar
-                  0x00529c                  _EEPROM_init
-                  0x0052a6                  _EEPROM_read
-                  0x0052de                  _EEPROM_write
-                  0x005344                  _ReadPMHigh
-                  0x005348                  _ReadPMLow
-                  0x00534c                  _UnlockPM
-                  0x005366                  _WritePMHigh
-                  0x00536a                  _WritePMLow
-                  0x00536e                  ___delay32
-                  0x00538a                  _delayMs
+                  0x00529c                  _printString
+                  0x0052ca                  _main
+                  0x005394                  _ReadPMHigh
+                  0x005398                  _ReadPMLow
+                  0x00539c                  _UnlockPM
+                  0x0053b6                  _WritePMHigh
+                  0x0053ba                  _WritePMLow
+                  0x0053be                  ___delay32
+                  0x0053da                  _delayMs
 
 External Symbols in Program Memory (by name):
 
                   0x004cb4                  _DataEEInit
                   0x004e22                  _DataEERead
                   0x004f08                  _DataEEWrite
-                  0x00529c                  _EEPROM_init
-                  0x0052a6                  _EEPROM_read
-                  0x0052de                  _EEPROM_write
+                  0x000756                  _EEPROM_init
+                  0x000760                  _EEPROM_read
+                  0x000798                  _EEPROM_write
                   0x0048c8                  _ErasePage
                   0x004924                  _GetNextAvailCount
                   0x004834                  _GetPageStatus
                   0x0049be                  _PackEE
-                  0x005344                  _ReadPMHigh
-                  0x005348                  _ReadPMLow
+                  0x005394                  _ReadPMHigh
+                  0x005398                  _ReadPMLow
                   0x005240                  _UART_getChar
                   0x0050a6                  _UART_init
                   0x0051f0                  _UART_putChar
@@ -219,10 +228,10 @@ External Symbols in Program Memory (by name):
                   0x0051dc                  _UART_txBufferFree
                   0x0051cc                  _UART_txBufferFull
                   0x0051b0                  _UART_txBufferSize
-                  0x00534c                  _UnlockPM
+                  0x00539c                  _UnlockPM
                   0x004800                  _UnlockWrite
-                  0x005366                  _WritePMHigh
-                  0x00536a                  _WritePMLow
+                  0x0053b6                  _WritePMHigh
+                  0x0053ba                  _WritePMLow
                   0x000350                  __DefaultInterrupt
                   0x000598                  __Puttxt
                   0x0002cc                  __U1RXInterrupt
@@ -230,20 +239,20 @@ External Symbols in Program Memory (by name):
                   0x000710                  __Vacopy
                   0x00039c                  ___Printf_s
                   0x000500                  ___Putfld_s
-                  0x00536e                  ___delay32
+                  0x0053be                  ___delay32
                   0x000252                  __data_init
                   0x000252                  __data_init_standard
                   0x00023c                  __psv_init
                   0x000200                  __resetPRI
                   0x00037e                  __sprintf_0
                   0x00037e                  __sprintf_s
-                  0x00538a                  _delayMs
+                  0x0053da                  _delayMs
                   0x000800                  _emulationPages
-                  0x000784                  _main
+                  0x0052ca                  _main
                   0x00055e                  _memchr
                   0x000572                  _memcpy
                   0x000356                  _memset
-                  0x000756                  _printString
+                  0x00529c                  _printString
                   0x00509c                  _setBaud115200
                   0x005092                  _setBaud57600
                   0x000580                  _strchr
@@ -281,10 +290,35 @@ LOAD build/default/debug/_ext/1023558067/FlashOperations.o
 LOAD build/default/debug/_ext/2113237976/eeprom_test.o
 LOAD build/default/debug/_ext/1023558067/delay.o
 LOAD build/default/debug/_ext/1023558067/uart.o
+
+reserve_data_0x800
+                    0x0800         0x20
+                    0x0820                  . = 0x20
+ *fill*             0x0800         0x2000
+
+reserve_data_0x820
+                    0x0820          0x2
+                    0x0822                  . = 0x2
+ *fill*             0x0820          0x200
+
+reserve_data_0x822
+                    0x0822          0x2
+                    0x0824                  . = 0x2
+ *fill*             0x0822          0x200
+
+reserve_data_0x824
+                    0x0824          0x2
+                    0x0826                  . = 0x2
+ *fill*             0x0824          0x200
+
+reserve_data_0x826
+                    0x0826         0x2a
+                    0x0850                  . = 0x2a
+ *fill*             0x0826         0x2a00
                     0x0001                  __MPLAB_BUILD = 0x1
                     0x0001                  __MPLAB_DEBUG = 0x1
                     0x0001                  __DEBUG = 0x1
-                    0x0001                  __MPLAB_DEBUGGER_SIMULATOR = 0x1
+                    0x0001                  __MPLAB_DEBUGGER_PK3 = 0x1
 LOAD p33FJ128MC802
 LOAD c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libfx-elf.a
                     0xf80000                  __FBS = 0xf80000
@@ -410,33 +444,33 @@ __FUID3
 .comment
  *(.comment)
 
-.debug_info       0x000000       0x2483
+.debug_info       0x000000       0x287e
  *(.debug_info)
  .debug_info      0x000000        0x3c2 build/default/debug/_ext/1023558067/eeprom.o
  .debug_info      0x0003c2        0x913 build/default/debug/_ext/1023558067/DEE Emulation 16-bit.o
  .debug_info      0x000cd5         0xda build/default/debug/_ext/1023558067/FlashOperations.o
- .debug_info      0x000daf        0x2c7 build/default/debug/_ext/2113237976/eeprom_test.o
- .debug_info      0x001076        0x195 build/default/debug/_ext/1023558067/delay.o
- .debug_info      0x00120b       0x1278 build/default/debug/_ext/1023558067/uart.o
+ .debug_info      0x000daf        0x6c2 build/default/debug/_ext/2113237976/eeprom_test.o
+ .debug_info      0x001471        0x195 build/default/debug/_ext/1023558067/delay.o
+ .debug_info      0x001606       0x1278 build/default/debug/_ext/1023558067/uart.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev     0x000000        0x563
+.debug_abbrev     0x000000        0x5e7
  *(.debug_abbrev)
  .debug_abbrev    0x000000         0xe6 build/default/debug/_ext/1023558067/eeprom.o
  .debug_abbrev    0x0000e6        0x1ae build/default/debug/_ext/1023558067/DEE Emulation 16-bit.o
  .debug_abbrev    0x000294         0x14 build/default/debug/_ext/1023558067/FlashOperations.o
- .debug_abbrev    0x0002a8         0xd2 build/default/debug/_ext/2113237976/eeprom_test.o
- .debug_abbrev    0x00037a         0x50 build/default/debug/_ext/1023558067/delay.o
- .debug_abbrev    0x0003ca        0x199 build/default/debug/_ext/1023558067/uart.o
+ .debug_abbrev    0x0002a8        0x156 build/default/debug/_ext/2113237976/eeprom_test.o
+ .debug_abbrev    0x0003fe         0x50 build/default/debug/_ext/1023558067/delay.o
+ .debug_abbrev    0x00044e        0x199 build/default/debug/_ext/1023558067/uart.o
 
-.debug_line       0x000000        0x6ca
+.debug_line       0x000000        0x734
  *(.debug_line)
  .debug_line      0x000000         0xe6 build/default/debug/_ext/1023558067/eeprom.o
  .debug_line      0x0000e6        0x2ab build/default/debug/_ext/1023558067/DEE Emulation 16-bit.o
  .debug_line      0x000391         0x67 build/default/debug/_ext/1023558067/FlashOperations.o
- .debug_line      0x0003f8         0xb6 build/default/debug/_ext/2113237976/eeprom_test.o
- .debug_line      0x0004ae         0xa1 build/default/debug/_ext/1023558067/delay.o
- .debug_line      0x00054f        0x17b build/default/debug/_ext/1023558067/uart.o
+ .debug_line      0x0003f8        0x120 build/default/debug/_ext/2113237976/eeprom_test.o
+ .debug_line      0x000518         0xa1 build/default/debug/_ext/1023558067/delay.o
+ .debug_line      0x0005b9        0x17b build/default/debug/_ext/1023558067/uart.o
 
 .debug_frame      0x000000        0x370
  *(.debug_frame)
@@ -446,11 +480,12 @@ __FUID3
  .debug_frame     0x0001c2         0x30 build/default/debug/_ext/1023558067/delay.o
  .debug_frame     0x0001f2        0x17e build/default/debug/_ext/1023558067/uart.o
 
-.debug_str        0x000000         0xd1
+.debug_str        0x000000         0xe7
  *(.debug_str)
  .debug_str       0x000000          0xc build/default/debug/_ext/1023558067/eeprom.o
  .debug_str       0x00000c         0x68 build/default/debug/_ext/1023558067/DEE Emulation 16-bit.o
- .debug_str       0x000074         0x5d build/default/debug/_ext/1023558067/uart.o
+ .debug_str       0x000074         0x16 build/default/debug/_ext/2113237976/eeprom_test.o
+ .debug_str       0x00008a         0x5d build/default/debug/_ext/1023558067/uart.o
 
 .debug_loc
  *(.debug_loc)
@@ -1580,72 +1615,78 @@ LOAD default_isr
 LOAD data_init
 
 .debug_pubtypes
-                  0x000090        0x214
+                  0x000090        0x263
  .debug_pubtypes
                   0x000090         0x3d build/default/debug/_ext/1023558067/eeprom.o
  .debug_pubtypes
                   0x0000cd         0x56 build/default/debug/_ext/1023558067/DEE Emulation 16-bit.o
  .debug_pubtypes
-                  0x000123         0x1e build/default/debug/_ext/2113237976/eeprom_test.o
+                  0x000123         0x6d build/default/debug/_ext/2113237976/eeprom_test.o
  .debug_pubtypes
-                  0x000141         0x1f build/default/debug/_ext/1023558067/delay.o
+                  0x000190         0x1f build/default/debug/_ext/1023558067/delay.o
  .debug_pubtypes
-                  0x000160        0x144 build/default/debug/_ext/1023558067/uart.o
+                  0x0001af        0x144 build/default/debug/_ext/1023558067/uart.o
 
 __c30_signature
-                  0x0002a4         0x6c
+                  0x0002f3         0x6c
  __c30_signature
-                  0x0002a4          0x6 build/default/debug/_ext/1023558067/eeprom.o
+                  0x0002f3          0x6 build/default/debug/_ext/1023558067/eeprom.o
  __c30_signature
-                  0x0002aa          0x6 build/default/debug/_ext/1023558067/DEE Emulation 16-bit.o
+                  0x0002f9          0x6 build/default/debug/_ext/1023558067/DEE Emulation 16-bit.o
  __c30_signature
-                  0x0002b0          0x6 build/default/debug/_ext/2113237976/eeprom_test.o
+                  0x0002ff          0x6 build/default/debug/_ext/2113237976/eeprom_test.o
  __c30_signature
-                  0x0002b6          0x6 build/default/debug/_ext/1023558067/delay.o
+                  0x000305          0x6 build/default/debug/_ext/1023558067/delay.o
  __c30_signature
-                  0x0002bc          0x6 build/default/debug/_ext/1023558067/uart.o
+                  0x00030b          0x6 build/default/debug/_ext/1023558067/uart.o
  __c30_signature
-                  0x0002c2          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o)
+                  0x000311          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o)
  __c30_signature
-                  0x0002c8          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.a(data_init_standard.o)
+                  0x000317          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.a(data_init_standard.o)
  __c30_signature
-                  0x0002ce          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
+                  0x00031d          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
  __c30_signature
-                  0x0002d4          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(memset.XX_eo)
+                  0x000323          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(memset.XX_eo)
  __c30_signature
-                  0x0002da          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(strlen.XX_eo)
+                  0x000329          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(strlen.XX_eo)
  __c30_signature
-                  0x0002e0          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(sprintf_s.XXeo)
+                  0x00032f          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(sprintf_s.XXeo)
  __c30_signature
-                  0x0002e6          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xprintf_s.XXeo)
+                  0x000335          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xprintf_s.XXeo)
  __c30_signature
-                  0x0002ec          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xputfld_s.XXeo)
+                  0x00033b          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xputfld_s.XXeo)
  __c30_signature
-                  0x0002f2          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(memchr.XX_eo)
+                  0x000341          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(memchr.XX_eo)
  __c30_signature
-                  0x0002f8          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(memcpy.XX_eo)
+                  0x000347          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(memcpy.XX_eo)
  __c30_signature
-                  0x0002fe          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(strchr.XX_eo)
+                  0x00034d          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(strchr.XX_eo)
  __c30_signature
-                  0x000304          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xputtxt.XX_eo)
+                  0x000353          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xputtxt.XX_eo)
  __c30_signature
-                  0x00030a          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xvacopy.XX_eo)
+                  0x000359          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xvacopy.XX_eo)
 
-.nbss               0x0800          0x4
- .nbss              0x0800          0x2 build/default/debug/_ext/1023558067/DEE Emulation 16-bit.o
-                    0x0800                  _dataEEFlags
- .nbss              0x0802          0x2 build/default/debug/_ext/2113237976/eeprom_test.o
-                    0x0802                  _uart
+.nbss               0x0850          0x4
+ .nbss              0x0850          0x2 build/default/debug/_ext/1023558067/DEE Emulation 16-bit.o
+                    0x0850                  _dataEEFlags
+ .nbss              0x0852          0x2 build/default/debug/_ext/2113237976/eeprom_test.o
+                    0x0852                  _uart
 
-.ndata              0x0804          0x2
- .ndata             0x0804          0x2 build/default/debug/_ext/2113237976/eeprom_test.o
-                    0x0804                  _message
+.ndata              0x0854          0x2
+ .ndata             0x0854          0x2 build/default/debug/_ext/2113237976/eeprom_test.o
+                    0x0854                  _message
 
-.bss                0x0806        0x40c
- .bss               0x0806        0x40c build/default/debug/_ext/1023558067/uart.o
+.bss                0x0856        0x40c
+ .bss               0x0856        0x40c build/default/debug/_ext/1023558067/uart.o
 
-.data               0x0c12         0x1a
- .data              0x0c12         0x1a c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xprintf_s.XXeo)
+.data               0x0c62         0x1a
+ .data              0x0c62         0x1a c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xprintf_s.XXeo)
+
+.config_FCKSM     0xf80008          0x2
+ .config_FCKSM    0xf80008          0x2 build/default/debug/_ext/2113237976/eeprom_test.o
+
+.config_IESO      0xf80006          0x2
+ .config_IESO     0xf80006          0x2 build/default/debug/_ext/2113237976/eeprom_test.o
 
 .ivt._U1RXInterrupt
                   0x00002a          0x2
@@ -1657,16 +1698,16 @@ __c30_signature
  .ivt._U1TXInterrupt
                   0x00002c          0x2 build/default/debug/_ext/1023558067/uart.o
 
-_06B0EBA05a7ee5a3
+_06B3EBA05ac792d9
                     0x8800       0x4000 load address 0x000800  
- _06B0EBA05a7ee5a3
+ _06B3EBA05ac792d9
                     0x8800       0x4000 build/default/debug/_ext/1023558067/DEE Emulation 16-bit.o
                     0x8800                  _emulationPages
 
 .const              0x8714         0x42 load address 0x000714  
  .const             0x8714         0x42 build/default/debug/_ext/2113237976/eeprom_test.o
 
-.text             0x004800        0xa9c
+.text             0x004800        0xb94
  .text            0x004800        0x892 build/default/debug/_ext/1023558067/DEE Emulation 16-bit.o
                   0x004800                  _UnlockWrite
                   0x004834                  _GetPageStatus
@@ -1687,33 +1728,31 @@ _06B0EBA05a7ee5a3
                   0x0051dc                  _UART_txBufferFree
                   0x0051f0                  _UART_putChar
                   0x005240                  _UART_getChar
+ .text            0x00529c         0xf8 build/default/debug/_ext/2113237976/eeprom_test.o
+                  0x00529c                  _printString
+                  0x0052ca                  _main
 
-.text             0x000756         0xa6
- .text            0x000756         0xa6 build/default/debug/_ext/2113237976/eeprom_test.o
-                  0x000756                  _printString
-                  0x000784                  _main
+.text             0x000756         0x74
+ .text            0x000756         0x74 build/default/debug/_ext/1023558067/eeprom.o
+                  0x000756                  _EEPROM_init
+                  0x000760                  _EEPROM_read
+                  0x000798                  _EEPROM_write
 
-.text             0x00529c         0x74
- .text            0x00529c         0x74 build/default/debug/_ext/1023558067/eeprom.o
-                  0x00529c                  _EEPROM_init
-                  0x0052a6                  _EEPROM_read
-                  0x0052de                  _EEPROM_write
+.dinit            0x0007ca         0x34
+ .dinit           0x0007ca         0x34 data_init
 
-.dinit            0x005310         0x34
- .dinit           0x005310         0x34 data_init
+.text             0x005394         0x2a
+ .text            0x005394         0x2a build/default/debug/_ext/1023558067/FlashOperations.o
+                  0x005394                  _ReadPMHigh
+                  0x005398                  _ReadPMLow
+                  0x00539c                  _UnlockPM
+                  0x0053b6                  _WritePMHigh
+                  0x0053ba                  _WritePMLow
 
-.text             0x005344         0x2a
- .text            0x005344         0x2a build/default/debug/_ext/1023558067/FlashOperations.o
-                  0x005344                  _ReadPMHigh
-                  0x005348                  _ReadPMLow
-                  0x00534c                  _UnlockPM
-                  0x005366                  _WritePMHigh
-                  0x00536a                  _WritePMLow
+.init.delay32     0x0053be         0x1c
+ .init.delay32    0x0053be         0x1c c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
+                  0x0053be                  ___delay32
 
-.init.delay32     0x00536e         0x1c
- .init.delay32    0x00536e         0x1c c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
-                  0x00536e                  ___delay32
-
-.text             0x00538a         0x18
- .text            0x00538a         0x18 build/default/debug/_ext/1023558067/delay.o
-                  0x00538a                  _delayMs
+.text             0x0053da         0x18
+ .text            0x0053da         0x18 build/default/debug/_ext/1023558067/delay.o
+                  0x0053da                  _delayMs

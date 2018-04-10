@@ -2,8 +2,8 @@
 #include "delay.h"
 #include "uart.h"
 #include <p33FJ128MC802.h>
-#include <string.h>
 #include <stdio.h>
+#include <string.h>
 
 #pragma config FNOSC = FRC      // select internal FRC at POR
 #pragma config FCKSM = CSECMD   // enable clock switching
