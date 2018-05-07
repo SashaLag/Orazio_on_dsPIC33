@@ -65,13 +65,13 @@ struct myUART* UART_init(const char* device __attribute__((unused)), uint32_t ba
   U1MODEbits.RTSMD = 1;   // Simplex Mode
   U1MODEbits.UEN = 0;     // U1TX and U1RX enabled, CTS,RTS not -- required?
   U1MODEbits.WAKE = 0;    // No Wake up (since we don't sleep here) -- required?
-  U1MODEbits.LPBACK = 0;	// No Loop Back
+  U1MODEbits.LPBACK = 0;  // No Loop Back
   U1MODEbits.ABAUD = 0;   // No Autobaud (would require sending '55')
-  U1MODEbits.URXINV = 0;	// IdleState = 1  (for dsPIC)
+  U1MODEbits.URXINV = 0;  // IdleState = 1  (for dsPIC)
   U1MODEbits.BRGH = 1;	  // 4 clocks per bit period
   U1MODEbits.PDSEL = 0;   // mode 01: 8-bit data, even parity
   U1MODEbits.STSEL = 0;   // 1 stop bit
-  
+
   //UART Status & Control Register Configuration
   U1STAbits.UTXINV = 0;   // U1TX Idle state is '1'
   U1STAbits.UTXBRK = 0;	  // Sync Break TX Disabled
@@ -82,9 +82,9 @@ struct myUART* UART_init(const char* device __attribute__((unused)), uint32_t ba
   U1STAbits.PERR = 0;     // Parity Error not detected
   U1STAbits.FERR = 0;     // Framing Error not detected
   U1STAbits.OERR = 0;     // RX buffer not overflowed
-  
+
   //Interrupt Configuration
-  IPC2bits.U1RXIP = 0x4;  // RX Mid Range Interrupt Priority level (0100 => 4), no urgent reason
+  IPC2bits.U1RXIP = 0x3;  // RX Mid Range Interrupt Priority level (0100 => 4), no urgent reason
   IPC3bits.U1TXIP = 0x4;  // TX Mid Range Interrupt Priority level (0100 => 4), no urgent reason
   U1STAbits.URXISEL1 = 0;	// Interrupt when any char is received and transferred from the U1RSR to the receive buffer.
   U1STAbits.URXISEL0 = 0;	// Second part of configuration
@@ -94,7 +94,9 @@ struct myUART* UART_init(const char* device __attribute__((unused)), uint32_t ba
   IFS0bits.U1RXIF = 0;    // Clear the Receive Interrupt Flag
   //Fire the engine
   U1STAbits.UTXEN = 1;    // TX Enabled, TX pin controlled by UART
-  
+  IEC0bits.U1TXIE = 0;    //DISABLE TRANSMIT INTERRUPT
+  //IEC0bits.U1RXIE = 0;    //DISABLE RECEIVE INTERRUPT
+  IEC0bits.U1RXIE = 1;    // 1 = Interrupt request enabled
   
   asm volatile ( "mov #OSCCONL, w1 \n"
                 "mov #0x45, w2 \n"
@@ -102,20 +104,22 @@ struct myUART* UART_init(const char* device __attribute__((unused)), uint32_t ba
                 "mov.b w2, [w1] \n"
                 "mov.b w3, [w1] \n"
                 "bclr OSCCON, #6 "); // CONTROL REGISTER UNLOCK: enable writes
-   
+
   //UART PINS
   RPINR18bits.U1RXR = 7; //INPUT  RPINR18 means U1RX -> MAPPED TO RP7 -> UART1 (RX)
   RPOR4bits.RP8R = 3; //OUTPUT RP2R means U1TX -> MAPPED TO RP8 -> UART1 (TX)
-  
+
   asm volatile ( "mov #OSCCONL, w1 \n"
                 "mov #0x45, w2 \n"
                 "mov #0x57, w3 \n"
                 "mov.b w2, [w1] \n"
                 "mov.b w3, [w1] \n"
                 "bset OSCCON, #6"); // CONTROL REGISTER LOCK: disable writes
-  
+
   AD1PCFGL = 0xFFFF; //FONDAMENTALE PER LA UART, DEVO CONFIGURARE QUEI PIN COME DIGITALI, DI BASE SONO ANALOGICI
-   
+  ADPCFG  =0xFFFF;
+  //AD1PCFGH =0xFFFF;
+    
   return &uart_0;
 }
 
@@ -158,10 +162,10 @@ void UART_putChar(struct myUART* uart, uint8_t c) {
 
 uint8_t UART_getChar(struct myUART* uart) {
   while (uart->rx_size == 0);
-  uint8_t c;
+  IFS0bits.U1RXIF = 1;
   //ATOMIC Execution of following Code
   asm volatile ("disi #0x3FFF"); // disable all user interrupts (atomically)
-    c = uart->rx_buffer[uart->rx_start];
+    uint8_t c = uart->rx_buffer[uart->rx_start];
     BUFFER_GET(uart->rx, UART_BUFFER_SIZE);
   asm volatile ("disi #0"); //enable all user interrupts (atomically)
   return c;
@@ -169,20 +173,22 @@ uint8_t UART_getChar(struct myUART* uart) {
 
 
 void __attribute__ ((interrupt, no_auto_psv)) _U1RXInterrupt() {
-  uint8_t c=U1RXREG;
-  if (uart_0.rx_size<UART_BUFFER_SIZE) {
-    uart_0.rx_buffer[uart_0.rx_end] = c;
-    BUFFER_PUT(uart_0.rx, UART_BUFFER_SIZE);
+    if(U1STAbits.OERR == 1) U1STAbits.OERR = 0;
+    if (! uart_0.rx_size) IEC0bits.U1RXIE = 0;   // Disable Receveir Interrupts
+    else if(uart_0.rx_size<UART_BUFFER_SIZE) {
+      uint8_t c=U1RXREG;
+      uart_0.rx_buffer[uart_0.rx_end] = c;
+      BUFFER_PUT(uart_0.rx, UART_BUFFER_SIZE);
+    }
+    IFS0bits.U1RXIF = 0;
   }
-}
 
 void __attribute__ ((interrupt, no_auto_psv)) _U1TXInterrupt(){
   //IFS0bits.U1TXIF = 0;    // Clear the Transmit Interrupt Flag
     if (! uart_0.tx_size) {
-    IEC0bits.U1TXIE = 0;   // Disable Transmit Interrupts
+      IEC0bits.U1TXIE = 0;   // Disable Transmit Interrupts
   } else {
     U1TXREG = uart_0.tx_buffer[uart_0.tx_start];
     BUFFER_GET(uart_0.tx, UART_BUFFER_SIZE);
-    LATB = ~LATB;  // just for debug
   }
 }

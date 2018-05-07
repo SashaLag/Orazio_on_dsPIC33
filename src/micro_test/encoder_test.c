@@ -19,16 +19,15 @@ void printString(char* s){
 int main(void){
   // Configure Oscillator to operate the device at 16 Mhz, Fcy=Fosc/2
   // Fosc= Fin*M/(N1*N2) = 10M*64/(4*5)=32Mhz for 10M input clock
-  PLLFBD=62;              // M=64
+  PLLFBD=62;                // M=64
   CLKDIVbits.PLLPOST=1;		// N1=4
   CLKDIVbits.PLLPRE=3;		// N2=5
   __builtin_write_OSCCONH(0x03);//__builtin_write_OSCCONH(0x01); //for FRC
   __builtin_write_OSCCONL(OSCCON | 0x01);
-  while (OSCCONbits.COSC != 0b011); // Wait for Clock switch to occur
+  while(OSCCONbits.COSC != 0b011);  // Wait for Clock switch to occur
   while(OSCCONbits.LOCK!=1) {};     // Wait for PLL to lock  
     
   Encoder_init();
-  
   uart=UART_init("uart_0",115200);
   while(1) {
     Encoder_sample();

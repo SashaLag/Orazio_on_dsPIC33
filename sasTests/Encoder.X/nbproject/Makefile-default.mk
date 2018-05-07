@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=../../src/arch/dspic/encoder.c ../../src/micro_test/encoder_test.c ../../src/arch/dspic/uart.c ../../src/arch/dspic/delay.c
+SOURCEFILES_QUOTED_IF_SPACED=../../src/arch/dspic/encoder.c ../../src/micro_test/encoder_test.c ../../src/arch/dspic/delay.c ../../src/arch/dspic/uart.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/_ext/1023558067/encoder.o ${OBJECTDIR}/_ext/2113237976/encoder_test.o ${OBJECTDIR}/_ext/1023558067/uart.o ${OBJECTDIR}/_ext/1023558067/delay.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/_ext/1023558067/encoder.o.d ${OBJECTDIR}/_ext/2113237976/encoder_test.o.d ${OBJECTDIR}/_ext/1023558067/uart.o.d ${OBJECTDIR}/_ext/1023558067/delay.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/_ext/1023558067/encoder.o ${OBJECTDIR}/_ext/2113237976/encoder_test.o ${OBJECTDIR}/_ext/1023558067/delay.o ${OBJECTDIR}/_ext/1023558067/uart.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/_ext/1023558067/encoder.o.d ${OBJECTDIR}/_ext/2113237976/encoder_test.o.d ${OBJECTDIR}/_ext/1023558067/delay.o.d ${OBJECTDIR}/_ext/1023558067/uart.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/_ext/1023558067/encoder.o ${OBJECTDIR}/_ext/2113237976/encoder_test.o ${OBJECTDIR}/_ext/1023558067/uart.o ${OBJECTDIR}/_ext/1023558067/delay.o
+OBJECTFILES=${OBJECTDIR}/_ext/1023558067/encoder.o ${OBJECTDIR}/_ext/2113237976/encoder_test.o ${OBJECTDIR}/_ext/1023558067/delay.o ${OBJECTDIR}/_ext/1023558067/uart.o
 
 # Source Files
-SOURCEFILES=../../src/arch/dspic/encoder.c ../../src/micro_test/encoder_test.c ../../src/arch/dspic/uart.c ../../src/arch/dspic/delay.c
+SOURCEFILES=../../src/arch/dspic/encoder.c ../../src/micro_test/encoder_test.c ../../src/arch/dspic/delay.c ../../src/arch/dspic/uart.c
 
 
 CFLAGS=
@@ -108,19 +108,19 @@ ${OBJECTDIR}/_ext/2113237976/encoder_test.o: ../../src/micro_test/encoder_test.c
 	${MP_CC} $(MP_EXTRA_CC_PRE)  ../../src/micro_test/encoder_test.c  -o ${OBJECTDIR}/_ext/2113237976/encoder_test.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/2113237976/encoder_test.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -I ./../../include -I ./../../src/arch/include/ -std=gnu99 -O0 -msmart-io=1 -Wall -msfr-warn=off  
 	@${FIXDEPS} "${OBJECTDIR}/_ext/2113237976/encoder_test.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
-${OBJECTDIR}/_ext/1023558067/uart.o: ../../src/arch/dspic/uart.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/_ext/1023558067" 
-	@${RM} ${OBJECTDIR}/_ext/1023558067/uart.o.d 
-	@${RM} ${OBJECTDIR}/_ext/1023558067/uart.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../../src/arch/dspic/uart.c  -o ${OBJECTDIR}/_ext/1023558067/uart.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1023558067/uart.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -I ./../../include -I ./../../src/arch/include/ -std=gnu99 -O0 -msmart-io=1 -Wall -msfr-warn=off  
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1023558067/uart.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
-	
 ${OBJECTDIR}/_ext/1023558067/delay.o: ../../src/arch/dspic/delay.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1023558067" 
 	@${RM} ${OBJECTDIR}/_ext/1023558067/delay.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1023558067/delay.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  ../../src/arch/dspic/delay.c  -o ${OBJECTDIR}/_ext/1023558067/delay.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1023558067/delay.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -I ./../../include -I ./../../src/arch/include/ -std=gnu99 -O0 -msmart-io=1 -Wall -msfr-warn=off  
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1023558067/delay.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/_ext/1023558067/uart.o: ../../src/arch/dspic/uart.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1023558067" 
+	@${RM} ${OBJECTDIR}/_ext/1023558067/uart.o.d 
+	@${RM} ${OBJECTDIR}/_ext/1023558067/uart.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../../src/arch/dspic/uart.c  -o ${OBJECTDIR}/_ext/1023558067/uart.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1023558067/uart.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -I ./../../include -I ./../../src/arch/include/ -std=gnu99 -O0 -msmart-io=1 -Wall -msfr-warn=off  
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1023558067/uart.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 else
 ${OBJECTDIR}/_ext/1023558067/encoder.o: ../../src/arch/dspic/encoder.c  nbproject/Makefile-${CND_CONF}.mk
@@ -137,19 +137,19 @@ ${OBJECTDIR}/_ext/2113237976/encoder_test.o: ../../src/micro_test/encoder_test.c
 	${MP_CC} $(MP_EXTRA_CC_PRE)  ../../src/micro_test/encoder_test.c  -o ${OBJECTDIR}/_ext/2113237976/encoder_test.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/2113237976/encoder_test.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -I ./../../include -I ./../../src/arch/include/ -std=gnu99 -O0 -msmart-io=1 -Wall -msfr-warn=off  
 	@${FIXDEPS} "${OBJECTDIR}/_ext/2113237976/encoder_test.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
-${OBJECTDIR}/_ext/1023558067/uart.o: ../../src/arch/dspic/uart.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/_ext/1023558067" 
-	@${RM} ${OBJECTDIR}/_ext/1023558067/uart.o.d 
-	@${RM} ${OBJECTDIR}/_ext/1023558067/uart.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../../src/arch/dspic/uart.c  -o ${OBJECTDIR}/_ext/1023558067/uart.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1023558067/uart.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -I ./../../include -I ./../../src/arch/include/ -std=gnu99 -O0 -msmart-io=1 -Wall -msfr-warn=off  
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1023558067/uart.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
-	
 ${OBJECTDIR}/_ext/1023558067/delay.o: ../../src/arch/dspic/delay.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1023558067" 
 	@${RM} ${OBJECTDIR}/_ext/1023558067/delay.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1023558067/delay.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  ../../src/arch/dspic/delay.c  -o ${OBJECTDIR}/_ext/1023558067/delay.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1023558067/delay.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -I ./../../include -I ./../../src/arch/include/ -std=gnu99 -O0 -msmart-io=1 -Wall -msfr-warn=off  
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1023558067/delay.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/_ext/1023558067/uart.o: ../../src/arch/dspic/uart.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1023558067" 
+	@${RM} ${OBJECTDIR}/_ext/1023558067/uart.o.d 
+	@${RM} ${OBJECTDIR}/_ext/1023558067/uart.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../../src/arch/dspic/uart.c  -o ${OBJECTDIR}/_ext/1023558067/uart.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1023558067/uart.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -I ./../../include -I ./../../src/arch/include/ -std=gnu99 -O0 -msmart-io=1 -Wall -msfr-warn=off  
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1023558067/uart.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 endif
 

@@ -24,7 +24,7 @@ int main(void){
   CLKDIVbits.PLLPRE=3;		// N2=5
   __builtin_write_OSCCONH(0x03);//__builtin_write_OSCCONH(0x01); //for FRC
   __builtin_write_OSCCONL(OSCCON | 0x01);
-  while (OSCCONbits.COSC != 0b011); // Wait for Clock switch to occur
+  while(OSCCONbits.COSC != 0b011); // Wait for Clock switch to occur
   while(OSCCONbits.LOCK!=1) {};     // Wait for PLL to lock
 
   uart=UART_init("uart_0",115200);

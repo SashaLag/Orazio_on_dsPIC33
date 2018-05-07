@@ -2,20 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/D:/Desktop/University/2.Magistrale/11.Sistemi_Operativi/06-Tesina/Orazio_on_dsPIC33/src/arch/dspic/pwm.c</file>
-            <file>file:/D:/Desktop/University/2.Magistrale/11.Sistemi_Operativi/06-Tesina/Orazio_on_dsPIC33/src/arch/dspic/encoder.c</file>
-            <file>file:/D:/Desktop/University/2.Magistrale/11.Sistemi_Operativi/06-Tesina/Orazio_on_dsPIC33/src/arch/dspic/uart.c</file>
-            <file>file:/D:/Desktop/University/2.Magistrale/11.Sistemi_Operativi/06-Tesina/Orazio_on_dsPIC33/src/micro_test/digio_test.c</file>
-            <file>file:/D:/Desktop/University/2.Magistrale/11.Sistemi_Operativi/06-Tesina/Orazio_on_dsPIC33/src/arch/dspic/eeprom.c</file>
-            <file>file:/D:/Desktop/University/2.Magistrale/11.Sistemi_Operativi/06-Tesina/Orazio_on_dsPIC33/src/micro_test/eeprom_test.c</file>
-            <file>file:/D:/Desktop/University/2.Magistrale/11.Sistemi_Operativi/06-Tesina/Orazio_on_dsPIC33/src/arch/dspic/digio.c</file>
-            <file>file:/D:/Desktop/University/2.Magistrale/11.Sistemi_Operativi/06-Tesina/Orazio_on_dsPIC33/src/arch/dspic/DEE%20Emulation%2016-bit.c</file>
-            <file>file:/D:/Desktop/University/2.Magistrale/11.Sistemi_Operativi/06-Tesina/Orazio_on_dsPIC33/src/micro_test/uart_test.c</file>
-            <file>file:/D:/Desktop/University/2.Magistrale/11.Sistemi_Operativi/06-Tesina/Orazio_on_dsPIC33/src/arch/dspic/delay.c</file>
-            <file>file:/D:/Desktop/University/2.Magistrale/11.Sistemi_Operativi/06-Tesina/Orazio_on_dsPIC33/src/arch/include/DEE%20Emulation%2016-bit.h</file>
-            <file>file:/D:/Desktop/University/2.Magistrale/11.Sistemi_Operativi/06-Tesina/Orazio_on_dsPIC33/src/micro_test/pwm_test.c</file>
-            <file>file:/D:/Desktop/University/2.Magistrale/11.Sistemi_Operativi/06-Tesina/Orazio_on_dsPIC33/src/micro_test/encoder_test.c</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

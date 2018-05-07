@@ -22,11 +22,11 @@ Command:
   build/default/debug/_ext/2113237976/eeprom_test.o \
   build/default/debug/_ext/1023558067/delay.o \
   build/default/debug/_ext/1023558067/uart.o \
-  -TC:\\Users\\aless\\AppData\\Local\\Temp\\tmp00005d38.00 \
-  -TC:\\Users\\aless\\AppData\\Local\\Temp\\tmp00005d38.01 \
-  -TC:\\Users\\aless\\AppData\\Local\\Temp\\tmp00005d38.02 \
-  -TC:\\Users\\aless\\AppData\\Local\\Temp\\tmp00005d38.03 \
-  -TC:\\Users\\aless\\AppData\\Local\\Temp\\tmp00005d38.04 \
+  -TC:\\Users\\aless\\AppData\\Local\\Temp\\tmp00000884.00 \
+  -TC:\\Users\\aless\\AppData\\Local\\Temp\\tmp00000884.01 \
+  -TC:\\Users\\aless\\AppData\\Local\\Temp\\tmp00000884.02 \
+  -TC:\\Users\\aless\\AppData\\Local\\Temp\\tmp00000884.03 \
+  -TC:\\Users\\aless\\AppData\\Local\\Temp\\tmp00000884.04 \
   --defsym=__MPLAB_BUILD=1 \
   --defsym=__MPLAB_DEBUG=1 \
   --defsym=__DEBUG=1 \
@@ -93,17 +93,17 @@ Program Memory  [Origin = 0x200, Length = 0x15600]
 
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
-.text                        0x200               0x514           0x79e  (1950)
-.const                       0x714                0x42            0x63  (99)
-.text                        0x756                0x74            0xae  (174)
-.dinit                       0x7ca                0x34            0x4e  (78)
-_06B3EBA05ac792d9            0x800              0x4000          0x6000  (24576)
+.text                        0x200               0x518           0x7a4  (1956)
+.const                       0x718                0x42            0x63  (99)
+.text                        0x75a                0x74            0xae  (174)
+.text                        0x7ce                0x2a            0x3f  (63)
+_06AC9BA05aef090b            0x800              0x4000          0x6000  (24576)
 .text                       0x4800               0xb94          0x115e  (4446)
-.text                       0x5394                0x2a            0x3f  (63)
-.init.delay32               0x53be                0x1c            0x2a  (42)
-.text                       0x53da                0x18            0x24  (36)
+.dinit                      0x5394                0x34            0x4e  (78)
+.init.delay32               0x53c8                0x1c            0x2a  (42)
+.text                       0x53e4                0x18            0x24  (36)
 
-                 Total program memory used (bytes):         0x7ae8  (31464) 23%
+                 Total program memory used (bytes):         0x7aee  (31470) 23%
 
 
 Ivt Memory  [Origin = 0x4, Length = 0xfc]
@@ -160,23 +160,28 @@ External Symbols in Program Memory (by address):
                   0x000252                  __data_init_standard
                   0x000252                  __data_init
                   0x0002cc                  __U1RXInterrupt
-                  0x00030c                  __U1TXInterrupt
-                  0x000350                  __DefaultInterrupt
-                  0x000356                  _memset
-                  0x000364                  _strlen
-                  0x000370                  sprintf_s.XXeo:_prout
-                  0x00037e                  __sprintf_0
-                  0x00037e                  __sprintf_s
-                  0x00039c                  ___Printf_s
-                  0x000500                  ___Putfld_s
-                  0x00055e                  _memchr
-                  0x000572                  _memcpy
-                  0x000580                  _strchr
-                  0x000598                  __Puttxt
-                  0x000710                  __Vacopy
-                  0x000756                  _EEPROM_init
-                  0x000760                  _EEPROM_read
-                  0x000798                  _EEPROM_write
+                  0x000310                  __U1TXInterrupt
+                  0x000354                  __DefaultInterrupt
+                  0x00035a                  _memset
+                  0x000368                  _strlen
+                  0x000374                  sprintf_s.XXeo:_prout
+                  0x000382                  __sprintf_0
+                  0x000382                  __sprintf_s
+                  0x0003a0                  ___Printf_s
+                  0x000504                  ___Putfld_s
+                  0x000562                  _memchr
+                  0x000576                  _memcpy
+                  0x000584                  _strchr
+                  0x00059c                  __Puttxt
+                  0x000714                  __Vacopy
+                  0x00075a                  _EEPROM_init
+                  0x000764                  _EEPROM_read
+                  0x00079c                  _EEPROM_write
+                  0x0007ce                  _ReadPMHigh
+                  0x0007d2                  _ReadPMLow
+                  0x0007d6                  _UnlockPM
+                  0x0007f0                  _WritePMHigh
+                  0x0007f4                  _WritePMLow
                   0x000800                  _emulationPages
                   0x004800                  _UnlockWrite
                   0x004834                  _GetPageStatus
@@ -198,28 +203,23 @@ External Symbols in Program Memory (by address):
                   0x005240                  _UART_getChar
                   0x00529c                  _printString
                   0x0052ca                  _main
-                  0x005394                  _ReadPMHigh
-                  0x005398                  _ReadPMLow
-                  0x00539c                  _UnlockPM
-                  0x0053b6                  _WritePMHigh
-                  0x0053ba                  _WritePMLow
-                  0x0053be                  ___delay32
-                  0x0053da                  _delayMs
+                  0x0053c8                  ___delay32
+                  0x0053e4                  _delayMs
 
 External Symbols in Program Memory (by name):
 
                   0x004cb4                  _DataEEInit
                   0x004e22                  _DataEERead
                   0x004f08                  _DataEEWrite
-                  0x000756                  _EEPROM_init
-                  0x000760                  _EEPROM_read
-                  0x000798                  _EEPROM_write
+                  0x00075a                  _EEPROM_init
+                  0x000764                  _EEPROM_read
+                  0x00079c                  _EEPROM_write
                   0x0048c8                  _ErasePage
                   0x004924                  _GetNextAvailCount
                   0x004834                  _GetPageStatus
                   0x0049be                  _PackEE
-                  0x005394                  _ReadPMHigh
-                  0x005398                  _ReadPMLow
+                  0x0007ce                  _ReadPMHigh
+                  0x0007d2                  _ReadPMLow
                   0x005240                  _UART_getChar
                   0x0050a6                  _UART_init
                   0x0051f0                  _UART_putChar
@@ -228,36 +228,36 @@ External Symbols in Program Memory (by name):
                   0x0051dc                  _UART_txBufferFree
                   0x0051cc                  _UART_txBufferFull
                   0x0051b0                  _UART_txBufferSize
-                  0x00539c                  _UnlockPM
+                  0x0007d6                  _UnlockPM
                   0x004800                  _UnlockWrite
-                  0x0053b6                  _WritePMHigh
-                  0x0053ba                  _WritePMLow
-                  0x000350                  __DefaultInterrupt
-                  0x000598                  __Puttxt
+                  0x0007f0                  _WritePMHigh
+                  0x0007f4                  _WritePMLow
+                  0x000354                  __DefaultInterrupt
+                  0x00059c                  __Puttxt
                   0x0002cc                  __U1RXInterrupt
-                  0x00030c                  __U1TXInterrupt
-                  0x000710                  __Vacopy
-                  0x00039c                  ___Printf_s
-                  0x000500                  ___Putfld_s
-                  0x0053be                  ___delay32
+                  0x000310                  __U1TXInterrupt
+                  0x000714                  __Vacopy
+                  0x0003a0                  ___Printf_s
+                  0x000504                  ___Putfld_s
+                  0x0053c8                  ___delay32
                   0x000252                  __data_init
                   0x000252                  __data_init_standard
                   0x00023c                  __psv_init
                   0x000200                  __resetPRI
-                  0x00037e                  __sprintf_0
-                  0x00037e                  __sprintf_s
-                  0x0053da                  _delayMs
+                  0x000382                  __sprintf_0
+                  0x000382                  __sprintf_s
+                  0x0053e4                  _delayMs
                   0x000800                  _emulationPages
                   0x0052ca                  _main
-                  0x00055e                  _memchr
-                  0x000572                  _memcpy
-                  0x000356                  _memset
+                  0x000562                  _memchr
+                  0x000576                  _memcpy
+                  0x00035a                  _memset
                   0x00529c                  _printString
                   0x00509c                  _setBaud115200
                   0x005092                  _setBaud57600
-                  0x000580                  _strchr
-                  0x000364                  _strlen
-                  0x000370                  sprintf_s.XXeo:_prout
+                  0x000584                  _strchr
+                  0x000368                  _strlen
+                  0x000374                  sprintf_s.XXeo:_prout
 
 Memory Configuration
 
@@ -349,7 +349,7 @@ LOAD c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libfx-elf.a
                   0x000002          0x2 SHORT 0x0 ((ABSOLUTE (__reset) >> 0x10) & 0x7f)
                   0x000003          0x2 SHORT 0x0
 
-.text             0x000200        0x514
+.text             0x000200        0x518
  *(.init)
  .init            0x000200         0x4c c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o)
                   0x000200                  __resetPRI
@@ -362,45 +362,45 @@ LOAD c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libfx-elf.a
  *(.handle)
  .handle          0x0002c8          0x4 jump_table
  *(.isr*)
- .isr.text        0x0002cc         0x84 build/default/debug/_ext/1023558067/uart.o
+ .isr.text        0x0002cc         0x88 build/default/debug/_ext/1023558067/uart.o
                   0x0002cc                  __U1RXInterrupt
-                  0x00030c                  __U1TXInterrupt
- .isr             0x000350          0x4 default_isr
-                  0x000350                  __DefaultInterrupt
+                  0x000310                  __U1TXInterrupt
+ .isr             0x000354          0x4 default_isr
+                  0x000354                  __DefaultInterrupt
  *(.libc)
  *(.libm)
  *(.libdsp)
  *(.lib*)
  .libpic30_crt_start_mode
-                  0x000354          0x2 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.a(crt_start_mode_normal.Leo)
-                  0x000354                  __crt_start_mode
-                  0x000354                  __crt_start_mode_normal
- .libc.memset     0x000356          0xe c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(memset.XX_eo)
-                  0x000356                  _memset
- .libc.strlen     0x000364          0xc c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(strlen.XX_eo)
-                  0x000364                  _strlen
- .libc.prout      0x000370          0xe c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(sprintf_s.XXeo)
-                  0x000370                  sprintf_s.XXeo:_prout
+                  0x000358          0x2 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.a(crt_start_mode_normal.Leo)
+                  0x000358                  __crt_start_mode
+                  0x000358                  __crt_start_mode_normal
+ .libc.memset     0x00035a          0xe c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(memset.XX_eo)
+                  0x00035a                  _memset
+ .libc.strlen     0x000368          0xc c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(strlen.XX_eo)
+                  0x000368                  _strlen
+ .libc.prout      0x000374          0xe c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(sprintf_s.XXeo)
+                  0x000374                  sprintf_s.XXeo:_prout
  .libc._sprintf_s
-                  0x00037e         0x1e c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(sprintf_s.XXeo)
-                  0x00037e                  __sprintf_s
-                  0x00037e                  __sprintf_0
+                  0x000382         0x1e c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(sprintf_s.XXeo)
+                  0x000382                  __sprintf_s
+                  0x000382                  __sprintf_0
  .libc.__Printf_s
-                  0x00039c        0x164 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xprintf_s.XXeo)
-                  0x00039c                  ___Printf_s
+                  0x0003a0        0x164 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xprintf_s.XXeo)
+                  0x0003a0                  ___Printf_s
  .libc.__Putfld_s
-                  0x000500         0x5e c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xputfld_s.XXeo)
-                  0x000500                  ___Putfld_s
- .libc.memchr     0x00055e         0x14 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(memchr.XX_eo)
-                  0x00055e                  _memchr
- .libc.memcpy     0x000572          0xe c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(memcpy.XX_eo)
-                  0x000572                  _memcpy
- .libc.strchr     0x000580         0x18 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(strchr.XX_eo)
-                  0x000580                  _strchr
- .libc._Puttxt    0x000598        0x178 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xputtxt.XX_eo)
-                  0x000598                  __Puttxt
- .libc._Vacopy    0x000710          0x4 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xvacopy.XX_eo)
-                  0x000710                  __Vacopy
+                  0x000504         0x5e c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xputfld_s.XXeo)
+                  0x000504                  ___Putfld_s
+ .libc.memchr     0x000562         0x14 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(memchr.XX_eo)
+                  0x000562                  _memchr
+ .libc.memcpy     0x000576          0xe c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(memcpy.XX_eo)
+                  0x000576                  _memcpy
+ .libc.strchr     0x000584         0x18 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(strchr.XX_eo)
+                  0x000584                  _strchr
+ .libc._Puttxt    0x00059c        0x178 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xputtxt.XX_eo)
+                  0x00059c                  __Puttxt
+ .libc._Vacopy    0x000714          0x4 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a(xvacopy.XX_eo)
+                  0x000714                  __Vacopy
 
 usercode
  *(usercode)
@@ -1698,14 +1698,14 @@ __c30_signature
  .ivt._U1TXInterrupt
                   0x00002c          0x2 build/default/debug/_ext/1023558067/uart.o
 
-_06B3EBA05ac792d9
+_06AC9BA05aef090b
                     0x8800       0x4000 load address 0x000800  
- _06B3EBA05ac792d9
+ _06AC9BA05aef090b
                     0x8800       0x4000 build/default/debug/_ext/1023558067/DEE Emulation 16-bit.o
                     0x8800                  _emulationPages
 
-.const              0x8714         0x42 load address 0x000714  
- .const             0x8714         0x42 build/default/debug/_ext/2113237976/eeprom_test.o
+.const              0x8718         0x42 load address 0x000718  
+ .const             0x8718         0x42 build/default/debug/_ext/2113237976/eeprom_test.o
 
 .text             0x004800        0xb94
  .text            0x004800        0x892 build/default/debug/_ext/1023558067/DEE Emulation 16-bit.o
@@ -1732,27 +1732,27 @@ _06B3EBA05ac792d9
                   0x00529c                  _printString
                   0x0052ca                  _main
 
-.text             0x000756         0x74
- .text            0x000756         0x74 build/default/debug/_ext/1023558067/eeprom.o
-                  0x000756                  _EEPROM_init
-                  0x000760                  _EEPROM_read
-                  0x000798                  _EEPROM_write
+.text             0x00075a         0x74
+ .text            0x00075a         0x74 build/default/debug/_ext/1023558067/eeprom.o
+                  0x00075a                  _EEPROM_init
+                  0x000764                  _EEPROM_read
+                  0x00079c                  _EEPROM_write
 
-.dinit            0x0007ca         0x34
- .dinit           0x0007ca         0x34 data_init
+.dinit            0x005394         0x34
+ .dinit           0x005394         0x34 data_init
 
-.text             0x005394         0x2a
- .text            0x005394         0x2a build/default/debug/_ext/1023558067/FlashOperations.o
-                  0x005394                  _ReadPMHigh
-                  0x005398                  _ReadPMLow
-                  0x00539c                  _UnlockPM
-                  0x0053b6                  _WritePMHigh
-                  0x0053ba                  _WritePMLow
+.text             0x0007ce         0x2a
+ .text            0x0007ce         0x2a build/default/debug/_ext/1023558067/FlashOperations.o
+                  0x0007ce                  _ReadPMHigh
+                  0x0007d2                  _ReadPMLow
+                  0x0007d6                  _UnlockPM
+                  0x0007f0                  _WritePMHigh
+                  0x0007f4                  _WritePMLow
 
-.init.delay32     0x0053be         0x1c
- .init.delay32    0x0053be         0x1c c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
-                  0x0053be                  ___delay32
+.init.delay32     0x0053c8         0x1c
+ .init.delay32    0x0053c8         0x1c c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
+                  0x0053c8                  ___delay32
 
-.text             0x0053da         0x18
- .text            0x0053da         0x18 build/default/debug/_ext/1023558067/delay.o
-                  0x0053da                  _delayMs
+.text             0x0053e4         0x18
+ .text            0x0053e4         0x18 build/default/debug/_ext/1023558067/delay.o
+                  0x0053e4                  _delayMs

@@ -21,8 +21,8 @@
                    projectFiles="true">
       <itemPath>../../src/arch/dspic/encoder.c</itemPath>
       <itemPath>../../src/micro_test/encoder_test.c</itemPath>
-      <itemPath>../../src/arch/dspic/uart.c</itemPath>
       <itemPath>../../src/arch/dspic/delay.c</itemPath>
+      <itemPath>../../src/arch/dspic/uart.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -36,6 +36,7 @@
     <Elem>../../src/arch/include</Elem>
     <Elem>../../include</Elem>
     <Elem>../Common</Elem>
+    <Elem>../../../srrg2_orazio_core/src/arch/dspic</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
