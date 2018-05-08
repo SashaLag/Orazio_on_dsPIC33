@@ -59,7 +59,6 @@ struct myUART* UART_init(const char* device __attribute__((unused)), uint32_t ba
   uart->rx_size = 0;
 
   //UART Control Register Configuration
-  U1MODEbits.UARTEN = 1;  // enables RX and TX
   U1MODEbits.USIDL = 0;   // Continue in Idle
   U1MODEbits.IREN = 0;    // No IR translation
   U1MODEbits.RTSMD = 1;   // Simplex Mode
@@ -84,7 +83,7 @@ struct myUART* UART_init(const char* device __attribute__((unused)), uint32_t ba
   U1STAbits.OERR = 0;     // RX buffer not overflowed
 
   //Interrupt Configuration
-  IPC2bits.U1RXIP = 0x3;  // RX Mid Range Interrupt Priority level (0100 => 4), no urgent reason
+  IPC2bits.U1RXIP = 0x4;  // RX Mid Range Interrupt Priority level (0100 => 4), no urgent reason
   IPC3bits.U1TXIP = 0x4;  // TX Mid Range Interrupt Priority level (0100 => 4), no urgent reason
   U1STAbits.URXISEL1 = 0;	// Interrupt when any char is received and transferred from the U1RSR to the receive buffer.
   U1STAbits.URXISEL0 = 0;	// Second part of configuration
@@ -93,6 +92,7 @@ struct myUART* UART_init(const char* device __attribute__((unused)), uint32_t ba
   IFS0bits.U1TXIF = 0;    // Clear the Transmit Interrupt Flag
   IFS0bits.U1RXIF = 0;    // Clear the Receive Interrupt Flag
   //Fire the engine
+  U1MODEbits.UARTEN = 1;  // enables RX and TX  
   U1STAbits.UTXEN = 1;    // TX Enabled, TX pin controlled by UART
   IEC0bits.U1TXIE = 0;    //DISABLE TRANSMIT INTERRUPT
   //IEC0bits.U1RXIE = 0;    //DISABLE RECEIVE INTERRUPT
@@ -161,26 +161,26 @@ void UART_putChar(struct myUART* uart, uint8_t c) {
   }
 
 uint8_t UART_getChar(struct myUART* uart) {
+  IFS0bits.U1RXIF = 1; 
+  if(U1STAbits.FERR == 1) return 1;  
+  if(U1STAbits.OERR == 1) U1STAbits.OERR = 0;
   while (uart->rx_size == 0);
-  IFS0bits.U1RXIF = 1;
-  //ATOMIC Execution of following Code
-  asm volatile ("disi #0x3FFF"); // disable all user interrupts (atomically)
-    uint8_t c = uart->rx_buffer[uart->rx_start];
-    BUFFER_GET(uart->rx, UART_BUFFER_SIZE);
-  asm volatile ("disi #0"); //enable all user interrupts (atomically)
-  return c;
+    //ATOMIC Execution of following Code
+    asm volatile ("disi #0x3FFF"); // disable all user interrupts (atomically)
+      uint8_t c = uart->rx_buffer[uart->rx_start];
+      BUFFER_GET(uart->rx, UART_BUFFER_SIZE);
+    asm volatile ("disi #0"); //enable all user interrupts (atomically)
+    return c;
 }
 
 
 void __attribute__ ((interrupt, no_auto_psv)) _U1RXInterrupt() {
-    if(U1STAbits.OERR == 1) U1STAbits.OERR = 0;
-    if (! uart_0.rx_size) IEC0bits.U1RXIE = 0;   // Disable Receveir Interrupts
-    else if(uart_0.rx_size<UART_BUFFER_SIZE) {
+   if(uart_0.rx_size<UART_BUFFER_SIZE) {
       uint8_t c=U1RXREG;
       uart_0.rx_buffer[uart_0.rx_end] = c;
       BUFFER_PUT(uart_0.rx, UART_BUFFER_SIZE);
     }
-    IFS0bits.U1RXIF = 0;
+   IFS0bits.U1RXIF = 0; 
   }
 
 void __attribute__ ((interrupt, no_auto_psv)) _U1TXInterrupt(){
